@@ -192,7 +192,7 @@ void CreateObjects(){
 void init(){
 
 	program = InitShader("vshader.glsl", "fshader.glsl");
-
+	std::cout << "program: " << program << std::endl;
 	uniformModel = glGetUniformLocation(program, "model");
 	uniformProjection = glGetUniformLocation(program, "projection");
 	uniformView = glGetUniformLocation(program, "view");
@@ -212,27 +212,22 @@ void init(){
 	glClearColor(BLACK, 1);
 
 }
-
-
-void display(void){
-	
-	unsigned int clear3d = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
-	unsigned int clear2d = GL_COLOR_BUFFER_BIT;
-
-	mat4 transformation;
+//Mesh* mesh, Texture texture, mat4 transformation, GLuint shader
+void DrawObject(Mesh* mesh, Texture* texture, mat4 transformation, GLuint shader) {
+	//mat4 transformation;
 	mat4 projection = Perspective(90.0f, (GLfloat)1.0f, 0.1f, 100.0f);
 	// Update camera
 	mat4 viewM = camera.calculateVievMatrix();
 
-	glUseProgram(program);
+	glUseProgram(shader);
 
-	glClear(clear3d);
 	
 
-	mainLight.UseLight(	uniformDirectionalLight.uniformAmbientIntensity, 
-						uniformDirectionalLight.uniformColor, 
-						uniformDirectionalLight.uniformDiffuseIntensity,
-						uniformDirectionalLight.uniformDirection);
+
+	mainLight.UseLight(uniformDirectionalLight.uniformAmbientIntensity,
+		uniformDirectionalLight.uniformColor,
+		uniformDirectionalLight.uniformDiffuseIntensity,
+		uniformDirectionalLight.uniformDirection);
 
 	vec3 lowerLight = camera.getCameraPosition();
 	lowerLight.y -= 0.3f;
@@ -249,10 +244,20 @@ void display(void){
 	glUniform3f(uniformEyePos, camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
 
 	glUniformMatrix4fv(uniformModel, 1, GL_TRUE, transformation);
-	floorTexture.UseTexture();
-	meshList[0]->RenderMesh();
+	texture->UseTexture();
+	mesh->RenderMesh();
+}
+void display(void) {
 
+	unsigned int clear3d = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
+	unsigned int clear2d = GL_COLOR_BUFFER_BIT;
+	glClear(clear3d);
+	
+	mat4 transformation;
+	DrawObject(meshList[0], &floorTexture, transformation, 1);
 
+	transformation = RotateY(45);
+	DrawObject(meshList[0], &floorTexture, transformation, 1);
 
 	glutPostRedisplay();
 	glutSwapBuffers();
