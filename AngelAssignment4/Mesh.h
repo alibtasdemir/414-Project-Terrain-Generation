@@ -20,3 +20,4 @@ private:
 
 };
 
+void calcNormals(unsigned int * indices, unsigned int indiceCount, GLfloat * vertices, unsigned int verticeCount, unsigned int vLength, unsigned int normalOffset);

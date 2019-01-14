@@ -9,6 +9,7 @@
 #include "Texture.h"
 #include "DirectionalLight.h"
 #include "SpotLight.h"
+#include "TerrainMesh.h"
 
 #define GREEN 0.0f, 0.683f, 0.3125f
 #define BLACK 0.0f, 0.0f, 0.0f
@@ -76,36 +77,11 @@ GLuint program;				// Shader program.
 GLfloat deltaTime = 0.0f, lastTime = 0.0f;
 
 
-void calcNormals(unsigned int* indices, unsigned int indiceCount, GLfloat* vertices, unsigned int verticeCount, unsigned int vLength, unsigned int normalOffset) {
 
-	for (size_t i = 0; i < indiceCount; i += 3)
-	{
-		unsigned int in0 = indices[i] * vLength;
-		unsigned int in1 = indices[i + 1] * vLength;
-		unsigned int in2 = indices[i + 2] * vLength;
-
-		vec3 v1(vertices[in1] - vertices[in0], vertices[in1 + 1] - vertices[in0 + 1], vertices[in1 + 2] - vertices[in0 + 2]);
-		vec3 v2(vertices[in2] - vertices[in0], vertices[in2 + 1] - vertices[in0 + 1], vertices[in2 + 2] - vertices[in0 + 2]);
-		vec3 normal = cross(v1, v2);
-		normal = normalize(normal);
-
-		in0 += normalOffset; in1 += normalOffset; in2 += normalOffset;
-		vertices[in0] += normal.x; vertices[in0 +1] += normal.y; vertices[in0 + 2] += normal.z;
-		vertices[in1] += normal.x; vertices[in1 + 1] += normal.y; vertices[in1 + 2] += normal.z;
-		vertices[in2] += normal.x; vertices[in2 + 1] += normal.y; vertices[in2 + 2] += normal.z;
-	}
-
-	for (size_t i = 0; i < verticeCount/vLength; i++)
-	{
-		unsigned int nOffset = i * vLength + normalOffset;
-		vec3 vec(vertices[nOffset], vertices[nOffset + 1], vertices[nOffset + 2]);
-
-		vec = normalize(vec);
-		vertices[nOffset] = vec.x; vertices[nOffset + 1] = vec.y; vertices[nOffset+ 2] = vec.z;
-	}
-
+void CreateTerrain() {
+	Mesh *obj1 = GenerateTerrainMesh(20, 20, 0.2f);
+	meshList.push_back(obj1);
 }
-
 void CreateCube(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat edgeLength) {
 	
 	printf("Cube created at pos: %f, %f, %f \n", centerX, centerY, centerZ);
@@ -229,9 +205,9 @@ void init(){
 	uniformShininess = glGetUniformLocation(program, "material.shininess");
 
 	
-	createFloor();
-	CreateObjects();
-	
+	//createFloor();
+	//CreateObjects();
+	CreateTerrain();
 
 	glClearColor(BLACK, 1);
 
@@ -244,7 +220,7 @@ void display(void){
 	unsigned int clear2d = GL_COLOR_BUFFER_BIT;
 
 	mat4 transformation;
-	mat4 projection = Perspective(45.0f, (GLfloat)1.0f, 0.1f, 100.0f);
+	mat4 projection = Perspective(90.0f, (GLfloat)1.0f, 0.1f, 100.0f);
 	// Update camera
 	mat4 viewM = camera.calculateVievMatrix();
 
@@ -276,13 +252,6 @@ void display(void){
 	floorTexture.UseTexture();
 	meshList[0]->RenderMesh();
 
-
-	glUniformMatrix4fv(uniformModel, 1, GL_TRUE, transformation);
-	cubeTexture.UseTexture();
-	for (size_t i = 1; i < 626; i++) {
-
-		meshList[i]->RenderMesh();
-	}
 
 
 	glutPostRedisplay();

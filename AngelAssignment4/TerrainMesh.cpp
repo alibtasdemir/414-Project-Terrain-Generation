@@ -1,6 +1,7 @@
 #include "TerrainMesh.h"
 
 
+
 siv::PerlinNoise perlinNoise = siv::PerlinNoise(1);
 
 float PerlinNoise(float x, float y) {
@@ -23,14 +24,14 @@ Mesh* GenerateTerrainMesh(float sizeX, float sizeZ, float step)
 	for (int x = 0; x < vertCountX; x++) {
 		for (int z = 0; z < vertCountZ; z++) {
 			vec3 quadPos = startPos + stepX * x + stepZ * z;
-			
-			
+
+
 			//vertices.insert(vertices.end(), position);
 			//    quad
 			//   2   3
 			//   0   1
 			vec3 v0 = quadPos;
-			v0 += PerlinNoise(v0.x, v0.z) * vec3(0,1,0) + vec3(0, -1, 0);
+			v0 += PerlinNoise(v0.x, v0.z) * vec3(0, 1, 0) + vec3(0, -1, 0);
 			vec3 v1 = quadPos + vec3(1, 0, 0) * step;
 			v1 += PerlinNoise(v1.x, v1.z) * vec3(0, 1, 0) + vec3(0, -1, 0);
 			vec3 v2 = quadPos + vec3(0, 0, 1) * step;
@@ -49,13 +50,13 @@ Mesh* GenerateTerrainMesh(float sizeX, float sizeZ, float step)
 			indices.insert(indices.end(), 3 + indicesStart);
 			indices.insert(indices.end(), 2 + indicesStart);
 			indices.insert(indices.end(), 0 + indicesStart);
-			
+
 			quadCounter++;
 		}
 	}
 
-	int floatPerVert = 5;
-	
+	int floatPerVert = 8; // 5
+
 	int floatArrSize = floatPerVert * (vertices.size());
 	std::vector<GLfloat> floatVertices = std::vector<GLfloat>(floatArrSize);
 
@@ -66,7 +67,14 @@ Mesh* GenerateTerrainMesh(float sizeX, float sizeZ, float step)
 		floatVertices[floatArrIndex + 2] = vertices[i].z;
 		floatVertices[floatArrIndex + 3] = 0;
 		floatVertices[floatArrIndex + 4] = 0;
+
+		// normals
+		floatVertices[floatArrIndex + 5] = 0;
+		floatVertices[floatArrIndex + 6] = 0;
+		floatVertices[floatArrIndex + 7] = 0;
 	}
+
+	calcNormals(&indices[0], indices.size(), &floatVertices[0], floatArrSize, 8, 5);
 
 	Mesh *mesh = new Mesh();
 	std::cout << "vertices size: " << floatVertices.size() << ",  indicesSize: " << indices.size();
