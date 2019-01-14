@@ -19,10 +19,31 @@ Camera::Camera(vec3 startPosition, vec3 startUp, GLfloat startYaw, GLfloat start
 }
 
 
+void Camera::mouseControl(GLfloat xChange, GLfloat yChange)
+{
+	xChange *= turnSpeed;
+	yChange *= turnSpeed;
+
+	yaw += xChange;
+	pitch += yChange;
+
+	if (pitch > 89.0f)
+	{
+		pitch = 89.0f;
+	}
+
+	if (pitch < -89.0f)
+	{
+		pitch = -89.0f;
+	}
+
+	update();
+}
+
 void Camera::keyControl(unsigned char keys, GLfloat deltaTime) {
 
 	GLfloat vel = moveSpeed * (deltaTime);
-	
+	printf("Delta time: %f\n", deltaTime);
 	// DEBUG ##################################################################################################
 	printf("\n%f %f %f \n", position.x, position.y, position.z);
 	//printf("\n%f %f %f \n", up.x, up.y, up.z);
@@ -54,6 +75,15 @@ void Camera::keyControl(unsigned char keys, GLfloat deltaTime) {
 
 mat4 Camera::calculateVievMatrix() {
 	return (LookAt(position, position+ front, up));
+}
+
+vec3 Camera::getCameraPosition() {
+	return position;
+}
+
+vec3 Camera::getCameraDirection()
+{
+	return normalize(front);
 }
 
 void Camera::update() {

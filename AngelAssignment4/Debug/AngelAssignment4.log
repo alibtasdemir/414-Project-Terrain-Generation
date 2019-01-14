@@ -1,0 +1,75 @@
+﻿  InitShader.cpp
+d:\codes\source\repos\project\414project\include\angel_commons\angel.h(63): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(707): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(708): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(709): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(730): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(732): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(735): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(752): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+  Camera.cpp
+d:\codes\source\repos\project\414project\include\angel_commons\angel.h(63): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(707): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(708): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(709): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(730): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(732): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(735): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(752): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\angelassignment4\camera.cpp(61): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
+  Main.cpp
+d:\codes\source\repos\project\414project\include\angel_commons\angel.h(63): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(707): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(708): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(709): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(730): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(732): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(735): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(752): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\angelassignment4\main.cpp(156): warning C4244: 'initializing': conversion from 'int' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\angelassignment4\main.cpp(240): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  Mesh.cpp
+d:\codes\source\repos\project\414project\include\angel_commons\angel.h(63): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(707): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(708): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(709): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(730): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(732): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(735): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(752): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+  Model.cpp
+d:\codes\source\repos\project\414project\include\angel_commons\angel.h(63): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(707): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(708): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(709): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(730): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(732): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(735): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(752): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\angelassignment4\model.cpp(29): warning C4477: 'printf' : format string '%s' requires an argument of type 'char *', but variadic argument 1 has type 'const std::string'
+d:\codes\source\repos\project\414project\angelassignment4\model.cpp(108): warning C4477: 'printf' : format string '%s' requires an argument of type 'char *', but variadic argument 1 has type 'std::string'
+  TerrainMesh.cpp
+d:\codes\source\repos\project\414project\include\angel_commons\angel.h(63): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(707): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(708): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(709): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(730): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(732): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(735): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(752): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\angelassignment4\terrainmesh.cpp(7): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+d:\codes\source\repos\project\414project\angelassignment4\terrainmesh.cpp(15): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+d:\codes\source\repos\project\414project\angelassignment4\terrainmesh.cpp(16): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+d:\codes\source\repos\project\414project\angelassignment4\terrainmesh.cpp(25): warning C4244: 'argument': conversion from 'int' to 'const GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\angelassignment4\terrainmesh.cpp(62): warning C4018: '<': signed/unsigned mismatch
+  Texture.cpp
+d:\codes\source\repos\project\414project\include\angel_commons\angel.h(63): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(707): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(708): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(709): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(730): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(732): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(735): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+d:\codes\source\repos\project\414project\include\angel_commons\mat.h(752): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+  Generating Code...
+LINK : fatal error LNK1104: cannot open file 'freeglut.lib'

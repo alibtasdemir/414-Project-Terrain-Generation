@@ -8,9 +8,12 @@ class Texture
 public:
 	Texture();
 	Texture(const char* fileLoc);
-
+	
+	/*
 	bool LoadTexture();
 	bool LoadTextureA();
+	*/
+	void LoadTexture();
 
 	void UseTexture();
 	void ClearTexture();

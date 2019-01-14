@@ -13,6 +13,11 @@ public:
 
 	void keyControl(unsigned char keys, GLfloat deltaTime);
 
+	void mouseControl(GLfloat xChange, GLfloat yChange);
+
+	vec3 getCameraPosition();
+	vec3 getCameraDirection();
+
 	mat4 calculateVievMatrix();
 
 	~Camera();
