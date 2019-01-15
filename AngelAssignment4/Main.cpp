@@ -79,7 +79,7 @@ GLfloat deltaTime = 0.0f, lastTime = 0.0f;
 
 
 void CreateTerrain() {
-	Mesh *obj1 = GenerateTerrainMesh(20, 20, 0.2f);
+	Mesh *obj1 = GenerateTerrainMesh(80, 80, 0.4f);
 	meshList.push_back(obj1);
 }
 void CreateCube(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat edgeLength) {
@@ -253,11 +253,11 @@ void display(void) {
 	unsigned int clear2d = GL_COLOR_BUFFER_BIT;
 	glClear(clear3d);
 	
-	mat4 transformation;
+	mat4 transformation;// = Scale(vec3(1, 1, 1));
 	DrawObject(meshList[0], &floorTexture, transformation, 1);
 
-	transformation = RotateY(45);
-	DrawObject(meshList[0], &floorTexture, transformation, 1);
+	//transformation = RotateY(45);
+	//DrawObject(meshList[0], &floorTexture, transformation, 1);
 
 	glutPostRedisplay();
 	glutSwapBuffers();
@@ -306,7 +306,7 @@ int main(int argc, char **argv) {
 
 	// setting up camera
 	camera = Camera(
-		vec3(0.0f, 0.0f, 0.0f),
+		vec3(0.0f, 2.0f, 0.0f),
 		vec3(0.0f, 1.0f, 0.0f),
 		-90.0f, 0.0f, 5.0f, .2f			// Camera angle, Camera rotation, Step size, Mouse sensitivity 
 	);

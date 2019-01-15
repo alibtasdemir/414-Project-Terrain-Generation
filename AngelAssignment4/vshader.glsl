@@ -14,8 +14,14 @@ uniform mat4 projection;
 uniform mat4 view;
 
 void main() {
+	//vec3 aPos2 = aPos;
+	//if(aPos.y < 1.9)
+	//aPos2 = vec3(aPos.x,1.9,aPos.z);
+	
+
 	gl_Position = (projection) * (view) * (model) * vec4(aPos, 1.0);
 	ourColor = vec4(clamp(aPos, 0.0f, 1.0f), 1.0f);
+	//ourColor = vec4(0,0,1,1);
 
 	TexCoord = tex;
 
