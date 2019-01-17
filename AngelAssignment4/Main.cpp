@@ -79,7 +79,7 @@ GLfloat deltaTime = 0.0f, lastTime = 0.0f;
 
 
 void CreateTerrain() {
-	Mesh *obj1 = GenerateTerrainMesh(160, 160, 0.4f);
+	Mesh *obj1 = GenerateTerrainMesh(80, 80, 0.1f);
 	meshList.push_back(obj1);
 }
 void CreateCube(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat edgeLength) {

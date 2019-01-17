@@ -12,10 +12,11 @@ float remap(float minval, float maxval, float curval)
 float PerlinNoise(float x, float y) {
 	
 	float a0 = (perlinNoise.octaveNoise(x / 16, y / 16, 0, 1) + 1) / 2;
-	float a1 = (perlinNoise.octaveNoise(x/8, y/8, 0, 1) + 1) / 2;
-	float a2 = (perlinNoise.octaveNoise(x, y, 0, 1) + 1) / 2;
-	float a3 = (perlinNoise.octaveNoise(x * 2, y * 2, 0, 1) + 1) / 2;
-	float a4 = (perlinNoise.octaveNoise(x * 4, y * 4, 0, 1) + 1) / 2;
+	float roughness = ((a0 + 1) * 0.5f - 0.2f);
+	float a1 = ((perlinNoise.octaveNoise(x/8, y/8, 0, 1) + 1) / 2) * roughness + 0.1f;
+	float a2 = ((perlinNoise.octaveNoise(x, y, 0, 1) + 1) / 2) * roughness;
+	float a3 = ((perlinNoise.octaveNoise(x * 2, y * 2, 0, 1) + 1) / 2) * roughness + 0.1f;
+	float a4 = ((perlinNoise.octaveNoise(x * 4, y * 4, 0, 1) + 1) / 2) * roughness + 0.1f;
 
 	float maxLen = 10.4f;
 	float a = { 6.7f * a0
