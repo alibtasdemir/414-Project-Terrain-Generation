@@ -85,5 +85,11 @@
     <None Include="fshader.glsl">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="fshader2.glsl">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="vshader2.glsl">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

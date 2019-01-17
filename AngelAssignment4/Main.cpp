@@ -46,9 +46,13 @@ struct {
 	GLuint uniformEdge;
 } uniformSpotLight;
 
-GLuint uniformModel = 0, uniformProjection = 0, 
-uniformView = 0, uniformEyePos = 0, 
-uniformSpecularIntensity = 0, uniformShininess = 0;
+struct ShaderInfo {
+	GLuint program = 0;
+	GLuint uniformModel = 0, uniformProjection = 0,
+		uniformView = 0, uniformEyePos = 0,
+		uniformSpecularIntensity = 0, uniformShininess = 0;
+};
+std::vector<ShaderInfo*> shaderInfoList;
 //////////////////////////////////////////////////////////
 
 
@@ -190,21 +194,23 @@ void CreateObjects(){
 }
 
 void init(){
+	ShaderInfo* newShaderInfo = new ShaderInfo();
 
 	program = InitShader("vshader.glsl", "fshader.glsl");
+	newShaderInfo->program = program;
 	std::cout << "program: " << program << std::endl;
-	uniformModel = glGetUniformLocation(program, "model");
-	uniformProjection = glGetUniformLocation(program, "projection");
-	uniformView = glGetUniformLocation(program, "view");
+	newShaderInfo->uniformModel = glGetUniformLocation(program, "model");
+	newShaderInfo->uniformProjection = glGetUniformLocation(program, "projection");
+	newShaderInfo->uniformView = glGetUniformLocation(program, "view");
 	uniformDirectionalLight.uniformColor = glGetUniformLocation(program, "directionalLight.base.color");
 	uniformDirectionalLight.uniformAmbientIntensity = glGetUniformLocation(program, "directionalLight.base.ambientIntensity");
 	uniformDirectionalLight.uniformDirection = glGetUniformLocation(program, "directionalLight.direction");
 	uniformDirectionalLight.uniformDiffuseIntensity = glGetUniformLocation(program, "directionalLight.base.diffuseIntensity");
-	uniformEyePos = glGetUniformLocation(program, "eyePosition");
-	uniformSpecularIntensity = glGetUniformLocation(program, "material.specularIntensity");
-	uniformShininess = glGetUniformLocation(program, "material.shininess");
-
+	newShaderInfo->uniformEyePos = glGetUniformLocation(program, "eyePosition");
+	newShaderInfo->uniformSpecularIntensity = glGetUniformLocation(program, "material.specularIntensity");
+	newShaderInfo->uniformShininess = glGetUniformLocation(program, "material.shininess");
 	
+	shaderInfoList.insert(shaderInfoList.end(), newShaderInfo);
 	//createFloor();
 	//CreateObjects();
 	CreateTerrain();
@@ -213,15 +219,16 @@ void init(){
 
 }
 //Mesh* mesh, Texture texture, mat4 transformation, GLuint shader
-void DrawObject(Mesh* mesh, Texture* texture, mat4 transformation, GLuint shader) {
+void DrawObject(Mesh* mesh, Texture* texture, mat4 transformation, ShaderInfo* shaderInfo) {
 	//mat4 transformation;
 	mat4 projection = Perspective(90.0f, (GLfloat)1.0f, 0.1f, 100.0f);
 	// Update camera
 	mat4 viewM = camera.calculateVievMatrix();
 
-	glUseProgram(shader);
+	glUseProgram(shaderInfo->program);
 
-	
+
+	std::cout <<"shaderinfo"  <<shaderInfo->program;
 
 
 	mainLight.UseLight(uniformDirectionalLight.uniformAmbientIntensity,
@@ -239,11 +246,11 @@ void DrawObject(Mesh* mesh, Texture* texture, mat4 transformation, GLuint shader
 		uniformSpotLight.uniformEdge);
 
 
-	glUniformMatrix4fv(uniformProjection, 1, GL_TRUE, projection);
-	glUniformMatrix4fv(uniformView, 1, GL_TRUE, viewM);
-	glUniform3f(uniformEyePos, camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
+	glUniformMatrix4fv(shaderInfo->uniformProjection, 1, GL_TRUE, projection);
+	glUniformMatrix4fv(shaderInfo->uniformView, 1, GL_TRUE, viewM);
+	glUniform3f(shaderInfo->uniformEyePos, camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
 
-	glUniformMatrix4fv(uniformModel, 1, GL_TRUE, transformation);
+	glUniformMatrix4fv(shaderInfo->uniformModel, 1, GL_TRUE, transformation);
 	texture->UseTexture();
 	mesh->RenderMesh();
 }
@@ -254,7 +261,7 @@ void display(void) {
 	glClear(clear3d);
 	
 	mat4 transformation;// = Scale(vec3(1, 1, 1));
-	DrawObject(meshList[0], &floorTexture, transformation, 1);
+	DrawObject(meshList[0], &floorTexture, transformation, shaderInfoList[0]);
 
 	//transformation = RotateY(45);
 	//DrawObject(meshList[0], &floorTexture, transformation, 1);
@@ -317,7 +324,7 @@ int main(int argc, char **argv) {
 	floorTexture = Texture("Textures/texture_ground.bmp");
 	floorTexture.LoadTexture();
 
-
+	shaderInfoList = std::vector<ShaderInfo*>();
 	init();
 
 	glutKeyboardFunc(keyboard);
