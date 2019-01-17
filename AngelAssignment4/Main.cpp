@@ -290,7 +290,7 @@ int main(int argc, char **argv) {
 	glutInitWindowSize(window_height, window_width);
 	glutInitContextProfile(GLUT_CORE_PROFILE);
 
-	window = glutCreateWindow("Ali Baran Tasdemir");
+	window = glutCreateWindow("Terrain Generation");
 
 	glEnable(GL_DEPTH_TEST);
 

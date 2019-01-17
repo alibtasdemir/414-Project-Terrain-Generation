@@ -131,6 +131,7 @@
     <ClCompile Include="..\Include\Angel_commons\InitShader.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DirectionalLight.cpp" />
+    <ClCompile Include="Interactables.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Mesh.cpp" />
@@ -143,6 +144,7 @@
     <ClInclude Include="..\Include\Angel_commons\Angel.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="DirectionalLight.h" />
+    <ClInclude Include="Interactables.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="PerlinNoise.h" />
