@@ -116,7 +116,7 @@ const vec4 deepWater = vec4( 0.0, 0.0, 1.0, 1.0 );
 const vec4 water = vec4( 0.1, 0.1, 1.0, 1.0 );
 const vec4 sand = vec4( 0.8, 0.8, 0.0, 1.0 );
 const vec4 grass = vec4( 0.1, 0.9, 0.1, 1.0 );
-const vec4 rock = vec4( 0.4, 0.3, 0.2, 1.0 );
+const vec4 darkGrass = vec4( 0.0, 0.6, 0.0, 1.0 );
 const vec4 snow = vec4( 1.0, 1.0, 1.0, 1.0 );
 
 void main()
@@ -130,14 +130,29 @@ void main()
 	float terrainYSize = 10;//10.4;
 	float u = (FragPos.y);
 	
-	if( u > 0.8 * terrainYSize )
-	terrainColor = snow;
-	else if(u > 0.4 * terrainYSize)
-	terrainColor = rock;
-	else if (u > 0.3 * terrainYSize)
-	terrainColor = grass;
+	if( u > 0.8 * terrainYSize ){
+		terrainColor = snow;
+		//float a = remap(0.4 * terrainYSize, 0.8 * terrainYSize, u);
+		//terrainColor = a * snow + (1 - a) * darkGrass;
+	}
+	else if(u > 0.4 * terrainYSize){
+		//float a = remap(0.4 * terrainYSize, 0.8 * terrainYSize, u);
+		//terrainColor = a * darkGrass + (1 - a) * grass;
+		float a = remap(0.4 * terrainYSize, 0.8 * terrainYSize, u);
+		terrainColor = a * snow + (1 - a) * (darkGrass);
+	}
+	else if (u > 0.3 * terrainYSize){
+		//float a = remap(0.3 * terrainYSize, 0.4 * terrainYSize, u);
+		//terrainColor = a * grass + (1 - a) * sand;
+		float a = remap(0.3 * terrainYSize, 0.4 * terrainYSize, u);
+		terrainColor = a * darkGrass + (1 - a) * grass;
+	}
 	else if (u > 0.2 * terrainYSize)
-	terrainColor = sand;
+	{
+		//terrainColor = sand;
+		float a = remap(0.2 * terrainYSize, 0.3 * terrainYSize, u);
+		terrainColor = a * grass + (1 - a) * sand;
+	}
 	else if (u > 0.1 * terrainYSize)
 	terrainColor = water;
 	else
