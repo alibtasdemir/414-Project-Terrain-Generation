@@ -31,7 +31,12 @@ bool Interactable::Raycast(vec3 origin, vec3 direction) {
 	}
 }
 std::vector<Interactable*> interactables = std::vector<Interactable*>();
-Interactable* selectedInteractable;
+Interactable* selectedInteractable = NULL;
+
+Interactable::Interactable() {
+	interactables.push_back(this);
+	std::cout << "interactable list updated" << std::endl;
+}
 
 void SelectInteractable(vec3 camPos, vec3 camLook)
 {
@@ -47,7 +52,8 @@ void SelectInteractable(vec3 camPos, vec3 camLook)
 void MoveSelectedInteractable(char input)
 {
 	float move = 1;
-
+	float rotate = 0.1f;
+	if (selectedInteractable == NULL) { return; }
 	switch (input)
 	{
 	case 'r':// right
@@ -74,6 +80,34 @@ void MoveSelectedInteractable(char input)
 		selectedInteractable->position += vec3(0, 0, -1) * move;
 		selectedInteractable->UpdateTransform();
 		break;
+
+		//rotations
+	case 'u':// right
+		selectedInteractable->rotation += vec3(1, 0, 0) * move;
+		selectedInteractable->UpdateTransform();
+		break;
+	case 'j':// left
+		selectedInteractable->rotation += vec3(-1, 0, 0) * move;
+		selectedInteractable->UpdateTransform();
+		break;
+	case 'ý':// up
+		selectedInteractable->rotation += vec3(0, 1, 0) * move;
+		selectedInteractable->UpdateTransform();
+		break;
+	case 'k':// down
+		selectedInteractable->rotation += vec3(0, -1, 0) * move;
+		selectedInteractable->UpdateTransform();
+		break;
+	case 'o':// forward
+		selectedInteractable->rotation += vec3(0, 0, 1) * move;
+		selectedInteractable->UpdateTransform();
+		break;
+	case 'l':// back
+		selectedInteractable->rotation += vec3(0, 0, -1) * move;
+		selectedInteractable->UpdateTransform();
+		break;
+
+
 		default:
 			break;
 	}

@@ -10,6 +10,7 @@ public:
 	vec3 rotation;
 	mat4 transform = mat4(1);
 
+	Interactable();
 	void UpdateTransform();
 
 	bool Raycast(vec3 origin, vec3 direction);

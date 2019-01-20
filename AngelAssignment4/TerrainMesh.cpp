@@ -116,6 +116,6 @@ Mesh* GenerateTerrainMesh(float sizeX, float sizeZ, float step)
 	Mesh *mesh = new Mesh();
 	mesh->CreateMesh(&floatVertices[0], &indices[0], floatVertices.size(), indices.size());
 	
-	std::cout << "small: " << small << ",  big: " << big;
+	
 	return mesh;
 }

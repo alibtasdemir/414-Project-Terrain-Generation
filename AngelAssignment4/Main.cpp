@@ -18,7 +18,8 @@
 
 
 // Function predefinitions. //////////////////////////////
-void mouseMove(int x, int y);						//////
+void mouseMove(int x, int y);                       //////
+void mouseClick(int button, int state, int x, int y);/////
 void reshape(int w, int h);							//////
 void keyboard(unsigned char key, int x, int y);		//////
 //////////////////////////////////////////////////////////
@@ -210,7 +211,7 @@ void init(){
 
 		program = InitShader("vshader.glsl", "fshader.glsl");
 		newShaderInfo->program = program;
-		std::cout << "program: " << program << std::endl;
+		
 		newShaderInfo->uniformModel = glGetUniformLocation(program, "model");
 		newShaderInfo->uniformProjection = glGetUniformLocation(program, "projection");
 		newShaderInfo->uniformView = glGetUniformLocation(program, "view");
@@ -247,7 +248,8 @@ void init(){
 		testCube->mesh = CreateCube(0, 0, 0, 1);
 		testCube->shaderInfo = newShaderInfo;
 		testCube->interactable = new Interactable();
-
+		testCube->interactable->position = vec3(0, 8, -5);
+		testCube->interactable->UpdateTransform();
 		InteractableMeshList.push_back(testCube);
 	}
 
@@ -269,7 +271,7 @@ void DrawObject(Mesh* mesh, Texture* texture, mat4 transformation, ShaderInfo* s
 	glUseProgram(shaderInfo->program);
 
 
-	std::cout <<"shaderinfo"  <<shaderInfo->program;
+	
 
 
 	mainLight.UseLight(uniformDirectionalLight.uniformAmbientIntensity,
@@ -362,7 +364,7 @@ int main(int argc, char **argv) {
 
 	// setting up camera
 	camera = Camera(
-		vec3(0.0f, 2.0f, 0.0f),
+		vec3(0.0f, 5.0f, 0.0f),
 		vec3(0.0f, 1.0f, 0.0f),
 		-90.0f, 0.0f, 5.0f, .2f			// Camera angle, Camera rotation, Step size, Mouse sensitivity 
 	);
@@ -382,6 +384,7 @@ int main(int argc, char **argv) {
 	glutIdleFunc(idle);
 	glutMotionFunc(mouseMove);
 	glutPassiveMotionFunc(mouseMove);
+	glutMouseFunc(mouseClick);
 
 	glutMainLoop();
 
@@ -403,6 +406,7 @@ void keyboard(unsigned char key, int x, int y)
 		camera.keyControl(key, (deltaTime / 100.0f));
 		break;
 	}
+	MoveSelectedInteractable(key);
 
 	glutPostRedisplay();
 	
@@ -462,4 +466,9 @@ void mouseMove(int x, int y) {
 	lasty = (GLfloat)y;
 
 	glutPostRedisplay();
+}
+void mouseClick(int button, int state, int x, int y) {
+	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+		SelectInteractable(camera.getCameraPosition(), camera.getCameraDirection());
+	}
 }
