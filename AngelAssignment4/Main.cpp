@@ -10,6 +10,7 @@
 #include "DirectionalLight.h"
 #include "SpotLight.h"
 #include "TerrainMesh.h"
+#include "Interactables.h"
 
 #define GREEN 0.0f, 0.683f, 0.3125f
 #define BLACK 0.0f, 0.0f, 0.0f
@@ -52,6 +53,14 @@ struct ShaderInfo {
 		uniformView = 0, uniformEyePos = 0,
 		uniformSpecularIntensity = 0, uniformShininess = 0;
 };
+
+struct InteractableMesh {
+	ShaderInfo* shaderInfo;
+	Mesh* mesh;
+	Interactable* interactable;
+};
+std::vector<InteractableMesh*> InteractableMeshList = std::vector<InteractableMesh*>();
+
 std::vector<ShaderInfo*> shaderInfoList;
 //////////////////////////////////////////////////////////
 
@@ -86,7 +95,7 @@ void CreateTerrain() {
 	Mesh *obj1 = GenerateTerrainMesh(80, 80, 0.1f);
 	meshList.push_back(obj1);
 }
-void CreateCube(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat edgeLength) {
+Mesh* CreateCube(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat edgeLength) {
 	
 	printf("Cube created at pos: %f, %f, %f \n", centerX, centerY, centerZ);
 
@@ -157,7 +166,9 @@ void CreateCube(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat edgeL
 	calcNormals(indices, 12*3, vertices, 24*8, 8, 5);
 	Mesh *obj1 = new Mesh();
 	obj1->CreateMesh(vertices, indices, 24*8, 12 * 3);
-	meshList.push_back(obj1);
+
+	return obj1;
+	//meshList.push_back(obj1);
 }
 
 
@@ -194,26 +205,56 @@ void CreateObjects(){
 }
 
 void init(){
-	ShaderInfo* newShaderInfo = new ShaderInfo();
+	{ // creating shader program
+		ShaderInfo* newShaderInfo = new ShaderInfo();
 
-	program = InitShader("vshader.glsl", "fshader.glsl");
-	newShaderInfo->program = program;
-	std::cout << "program: " << program << std::endl;
-	newShaderInfo->uniformModel = glGetUniformLocation(program, "model");
-	newShaderInfo->uniformProjection = glGetUniformLocation(program, "projection");
-	newShaderInfo->uniformView = glGetUniformLocation(program, "view");
-	uniformDirectionalLight.uniformColor = glGetUniformLocation(program, "directionalLight.base.color");
-	uniformDirectionalLight.uniformAmbientIntensity = glGetUniformLocation(program, "directionalLight.base.ambientIntensity");
-	uniformDirectionalLight.uniformDirection = glGetUniformLocation(program, "directionalLight.direction");
-	uniformDirectionalLight.uniformDiffuseIntensity = glGetUniformLocation(program, "directionalLight.base.diffuseIntensity");
-	newShaderInfo->uniformEyePos = glGetUniformLocation(program, "eyePosition");
-	newShaderInfo->uniformSpecularIntensity = glGetUniformLocation(program, "material.specularIntensity");
-	newShaderInfo->uniformShininess = glGetUniformLocation(program, "material.shininess");
-	
-	shaderInfoList.insert(shaderInfoList.end(), newShaderInfo);
+		program = InitShader("vshader.glsl", "fshader.glsl");
+		newShaderInfo->program = program;
+		std::cout << "program: " << program << std::endl;
+		newShaderInfo->uniformModel = glGetUniformLocation(program, "model");
+		newShaderInfo->uniformProjection = glGetUniformLocation(program, "projection");
+		newShaderInfo->uniformView = glGetUniformLocation(program, "view");
+		uniformDirectionalLight.uniformColor = glGetUniformLocation(program, "directionalLight.base.color");
+		uniformDirectionalLight.uniformAmbientIntensity = glGetUniformLocation(program, "directionalLight.base.ambientIntensity");
+		uniformDirectionalLight.uniformDirection = glGetUniformLocation(program, "directionalLight.direction");
+		uniformDirectionalLight.uniformDiffuseIntensity = glGetUniformLocation(program, "directionalLight.base.diffuseIntensity");
+		newShaderInfo->uniformEyePos = glGetUniformLocation(program, "eyePosition");
+		newShaderInfo->uniformSpecularIntensity = glGetUniformLocation(program, "material.specularIntensity");
+		newShaderInfo->uniformShininess = glGetUniformLocation(program, "material.shininess");
+
+		shaderInfoList.insert(shaderInfoList.end(), newShaderInfo);
+	}
+	{ // creating shader program
+		ShaderInfo* newShaderInfo = new ShaderInfo();
+
+		program = InitShader("vshader2.glsl", "fshader2.glsl");
+		newShaderInfo->program = program;
+		std::cout << "program: " << program << std::endl;
+		newShaderInfo->uniformModel = glGetUniformLocation(program, "model");
+		newShaderInfo->uniformProjection = glGetUniformLocation(program, "projection");
+		newShaderInfo->uniformView = glGetUniformLocation(program, "view");
+		uniformDirectionalLight.uniformColor = glGetUniformLocation(program, "directionalLight.base.color");
+		uniformDirectionalLight.uniformAmbientIntensity = glGetUniformLocation(program, "directionalLight.base.ambientIntensity");
+		uniformDirectionalLight.uniformDirection = glGetUniformLocation(program, "directionalLight.direction");
+		uniformDirectionalLight.uniformDiffuseIntensity = glGetUniformLocation(program, "directionalLight.base.diffuseIntensity");
+		newShaderInfo->uniformEyePos = glGetUniformLocation(program, "eyePosition");
+		newShaderInfo->uniformSpecularIntensity = glGetUniformLocation(program, "material.specularIntensity");
+		newShaderInfo->uniformShininess = glGetUniformLocation(program, "material.shininess");
+
+		//shaderInfoList.insert(shaderInfoList.end(), newShaderInfo);
+		
+		InteractableMesh* testCube = new InteractableMesh();
+		testCube->mesh = CreateCube(0, 0, 0, 1);
+		testCube->shaderInfo = newShaderInfo;
+		testCube->interactable = new Interactable();
+
+		InteractableMeshList.push_back(testCube);
+	}
+
 	//createFloor();
 	//CreateObjects();
 	CreateTerrain();
+
 
 	glClearColor(BLACK, 1);
 
@@ -254,6 +295,9 @@ void DrawObject(Mesh* mesh, Texture* texture, mat4 transformation, ShaderInfo* s
 	texture->UseTexture();
 	mesh->RenderMesh();
 }
+void DrawInteractableObject(InteractableMesh* interactableMesh, Texture* texture) {
+	DrawObject(interactableMesh->mesh, texture, interactableMesh->interactable->transform, interactableMesh->shaderInfo);
+}
 void display(void) {
 
 	unsigned int clear3d = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
@@ -262,6 +306,11 @@ void display(void) {
 	
 	mat4 transformation;// = Scale(vec3(1, 1, 1));
 	DrawObject(meshList[0], &floorTexture, transformation, shaderInfoList[0]);
+
+	for (int i = 0; i < InteractableMeshList.size(); i++) {
+		InteractableMesh* element = InteractableMeshList[i];
+		DrawInteractableObject(element, &floorTexture);
+	}
 
 	//transformation = RotateY(45);
 	//DrawObject(meshList[0], &floorTexture, transformation, 1);

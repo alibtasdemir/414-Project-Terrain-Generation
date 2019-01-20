@@ -144,6 +144,7 @@
     <ClInclude Include="..\Include\Angel_commons\Angel.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="DirectionalLight.h" />
+    <ClInclude Include="GameObject.h" />
     <ClInclude Include="Interactables.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Mesh.h" />
