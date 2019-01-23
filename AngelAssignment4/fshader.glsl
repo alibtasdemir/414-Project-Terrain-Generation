@@ -119,6 +119,8 @@ const vec4 grass = vec4( 0.1, 0.9, 0.1, 1.0 );
 const vec4 darkGrass = vec4( 0.0, 0.5, 0.0, 1.0 );
 const vec4 snow = vec4( 1.0, 1.0, 1.0, 1.0 );
 
+const vec4 fog = vec4(0.7,0.7,0.7,1.0);
+float fogMaxDistance = 40;
 void main()
 {
 	vec4 finalColor = CalcLightByDirection(directionalLight.base, directionalLight.direction);
@@ -158,6 +160,10 @@ void main()
 	else
 	terrainColor = deepWater;
 
-	color = terrainColor * finalColor;
+	float distanceToEyeSqr = length(eyePosition - FragPos);
+	if(distanceToEyeSqr > fogMaxDistance){distanceToEyeSqr = fogMaxDistance;}
+	float fogFactor = distanceToEyeSqr / fogMaxDistance;
+
+	color = terrainColor * finalColor * (1 - fogFactor + 0.2) + (fogFactor - 0.2) * fog;
 
 }
