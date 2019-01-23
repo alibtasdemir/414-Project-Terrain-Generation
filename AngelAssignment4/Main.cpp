@@ -61,6 +61,7 @@ struct InteractableMesh {
 	Interactable* interactable;
 };
 std::vector<InteractableMesh*> InteractableMeshList = std::vector<InteractableMesh*>();
+InteractableMesh* mainLightInteractable;
 
 std::vector<ShaderInfo*> shaderInfoList;
 //////////////////////////////////////////////////////////
@@ -244,13 +245,14 @@ void init(){
 
 		//shaderInfoList.insert(shaderInfoList.end(), newShaderInfo);
 		
-		InteractableMesh* testCube = new InteractableMesh();
-		testCube->mesh = CreateCube(0, 0, 0, 1);
-		testCube->shaderInfo = newShaderInfo;
-		testCube->interactable = new Interactable();
-		testCube->interactable->position = vec3(0, 8, -5);
-		testCube->interactable->UpdateTransform();
-		InteractableMeshList.push_back(testCube);
+		InteractableMesh* lightMesh = new InteractableMesh();
+		lightMesh->mesh = CreateCube(0, 0, 0, 1);
+		lightMesh->shaderInfo = newShaderInfo;
+		lightMesh->interactable = new Interactable();
+		lightMesh->interactable->position = vec3(0, 8, -5);
+		lightMesh->interactable->UpdateTransform();
+		//InteractableMeshList.push_back(testCube);
+		mainLightInteractable = lightMesh;
 	}
 
 	//createFloor();
@@ -300,22 +302,31 @@ void DrawObject(Mesh* mesh, Texture* texture, mat4 transformation, ShaderInfo* s
 void DrawInteractableObject(InteractableMesh* interactableMesh, Texture* texture) {
 	DrawObject(interactableMesh->mesh, texture, interactableMesh->interactable->transform, interactableMesh->shaderInfo);
 }
+float time = 0;
 void display(void) {
 
 	unsigned int clear3d = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
 	unsigned int clear2d = GL_COLOR_BUFFER_BIT;
 	glClear(clear3d);
+	time += deltaTime * 0.1f;
 	
+
 	mat4 transformation;// = Scale(vec3(1, 1, 1));
 	DrawObject(meshList[0], &floorTexture, transformation, shaderInfoList[0]);
 
+	// draw interactable meshes
 	for (int i = 0; i < InteractableMeshList.size(); i++) {
 		InteractableMesh* element = InteractableMeshList[i];
 		DrawInteractableObject(element, &floorTexture);
 	}
 
-	//transformation = RotateY(45);
-	//DrawObject(meshList[0], &floorTexture, transformation, 1);
+	{
+		// handle and draw the interactable mesh for light source
+		DrawInteractableObject(mainLightInteractable, &floorTexture);
+		vec4 lightDirection = mainLightInteractable->interactable->transform[0];
+		vec3 lightDirectionV3 = vec3(lightDirection.x, lightDirection.y, lightDirection.z);
+		mainLight.UpdateDirection(lightDirectionV3);
+	}
 
 	glutPostRedisplay();
 	glutSwapBuffers();
