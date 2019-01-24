@@ -1,65 +1,7 @@
-#define STB_IMAGE_IMPLEMENTATION
-
-#include <Angel_commons/Angel.h>
-#include <vector>
-
-
-#include "Mesh.h"
-#include "Camera.h"
-#include "Texture.h"
-#include "DirectionalLight.h"
-#include "SpotLight.h"
-#include "TerrainMesh.h"
-#include "Interactables.h"
-
-#define GREEN 0.0f, 0.683f, 0.3125f
-#define BLACK 0.0f, 0.0f, 0.0f
-#define RED 0.99218f, 0.0f, 0.0f
-
-
-// Function predefinitions. //////////////////////////////
-void mouseMove(int x, int y);                       //////
-void mouseClick(int button, int state, int x, int y);/////
-void reshape(int w, int h);							//////
-void keyboard(unsigned char key, int x, int y);		//////
-//////////////////////////////////////////////////////////
-
+#include "Main.h"
 
 // Shader Pointers ///////////////////////////////////////
-struct {								
-	GLuint uniformColor;
-	GLuint uniformAmbientIntensity;
-	GLuint uniformDiffuseIntensity;
 
-	GLuint uniformDirection;
-} uniformDirectionalLight;
-
-struct {
-	GLuint uniformColor;
-	GLuint uniformAmbientIntensity;
-	GLuint uniformDiffuseIntensity;
-
-	GLuint uniformPosition;
-	GLuint uniformConstant;
-	GLuint uniformLinear;
-	GLuint uniformExponent;
-
-	GLuint uniformDirection;
-	GLuint uniformEdge;
-} uniformSpotLight;
-
-struct ShaderInfo {
-	GLuint program = 0;
-	GLuint uniformModel = 0, uniformProjection = 0,
-		uniformView = 0, uniformEyePos = 0,
-		uniformSpecularIntensity = 0, uniformShininess = 0;
-};
-
-struct InteractableMesh {
-	ShaderInfo* shaderInfo;
-	Mesh* mesh;
-	Interactable* interactable;
-};
 std::vector<InteractableMesh*> InteractableMeshList = std::vector<InteractableMesh*>();
 InteractableMesh* mainLightInteractable;
 
@@ -67,36 +9,17 @@ std::vector<ShaderInfo*> shaderInfoList;
 //////////////////////////////////////////////////////////
 
 
-std::vector<Mesh*> meshList;
-Camera camera;
-
 Texture cubeTexture;
 Texture floorTexture;
 
 GLfloat xChange, yChange;
-DirectionalLight mainLight;
-
-SpotLight spotLight;
-
-
-//  variables representing the window size
-int window_height = 1366,
-		window_width = 768;
-const float toRadians = 3.14159265f / 180.0f;
-
-
-int window;					// glut window.
-
-GLuint program;				// Shader program.
-
-GLfloat deltaTime = 0.0f, lastTime = 0.0f;
-
 
 
 void CreateTerrain() {
 	Mesh *obj1 = GenerateTerrainMesh(80, 80, 0.1f);
 	meshList.push_back(obj1);
 }
+
 Mesh* CreateCube(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat edgeLength) {
 	
 	printf("Cube created at pos: %f, %f, %f \n", centerX, centerY, centerZ);
@@ -206,13 +129,27 @@ void CreateObjects(){
 	}
 }
 
+void createSkybox() {
+	//mat4 transformation;
+	mat4 projection = Perspective(90.0f, (GLfloat)1.0f, 0.1f, 100.0f);
+	// Update camera
+	mat4 viewM = camera.calculateVievMatrix();
+	mat4 transformation;
+
+
+	skybox.DrawSkybox(viewM, projection, transformation, camera.getCameraPosition());
+
+}
+
 void init(){
+	
 	{ // creating shader program
 		ShaderInfo* newShaderInfo = new ShaderInfo();
 
 		program = InitShader("vshader.glsl", "fshader.glsl");
 		newShaderInfo->program = program;
 		
+		// Get uniform locations.
 		newShaderInfo->uniformModel = glGetUniformLocation(program, "model");
 		newShaderInfo->uniformProjection = glGetUniformLocation(program, "projection");
 		newShaderInfo->uniformView = glGetUniformLocation(program, "view");
@@ -223,7 +160,9 @@ void init(){
 		newShaderInfo->uniformEyePos = glGetUniformLocation(program, "eyePosition");
 		newShaderInfo->uniformSpecularIntensity = glGetUniformLocation(program, "material.specularIntensity");
 		newShaderInfo->uniformShininess = glGetUniformLocation(program, "material.shininess");
+		newShaderInfo->uniformTime = glGetUniformLocation(program, "time");
 
+		// Insert shader to shaders list.
 		shaderInfoList.insert(shaderInfoList.end(), newShaderInfo);
 	}
 	{ // creating shader program
@@ -242,7 +181,7 @@ void init(){
 		newShaderInfo->uniformEyePos = glGetUniformLocation(program, "eyePosition");
 		newShaderInfo->uniformSpecularIntensity = glGetUniformLocation(program, "material.specularIntensity");
 		newShaderInfo->uniformShininess = glGetUniformLocation(program, "material.shininess");
-
+		newShaderInfo->uniformTime = glGetUniformLocation(program, "time");
 		//shaderInfoList.insert(shaderInfoList.end(), newShaderInfo);
 		
 		InteractableMesh* lightMesh = new InteractableMesh();
@@ -257,12 +196,16 @@ void init(){
 
 	//createFloor();
 	//CreateObjects();
+	
 	CreateTerrain();
 
 
 	glClearColor(BLACK, 1);
 
 }
+
+
+
 //Mesh* mesh, Texture texture, mat4 transformation, GLuint shader
 void DrawObject(Mesh* mesh, Texture* texture, mat4 transformation, ShaderInfo* shaderInfo) {
 	//mat4 transformation;
@@ -271,9 +214,6 @@ void DrawObject(Mesh* mesh, Texture* texture, mat4 transformation, ShaderInfo* s
 	mat4 viewM = camera.calculateVievMatrix();
 
 	glUseProgram(shaderInfo->program);
-
-
-	
 
 
 	mainLight.UseLight(uniformDirectionalLight.uniformAmbientIntensity,
@@ -296,12 +236,14 @@ void DrawObject(Mesh* mesh, Texture* texture, mat4 transformation, ShaderInfo* s
 	glUniform3f(shaderInfo->uniformEyePos, camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
 
 	glUniformMatrix4fv(shaderInfo->uniformModel, 1, GL_TRUE, transformation);
+	glUniform1f(shaderInfo->uniformTime, glutGet(GLUT_ELAPSED_TIME));
 	texture->UseTexture();
 	mesh->RenderMesh();
 }
 void DrawInteractableObject(InteractableMesh* interactableMesh, Texture* texture) {
 	DrawObject(interactableMesh->mesh, texture, interactableMesh->interactable->transform, interactableMesh->shaderInfo);
 }
+
 float time = 0;
 void display(void) {
 
@@ -310,6 +252,7 @@ void display(void) {
 	glClear(clear3d);
 	time += deltaTime * 0.1f;
 	
+	createSkybox();
 
 	mat4 transformation;// = Scale(vec3(1, 1, 1));
 	DrawObject(meshList[0], &floorTexture, transformation, shaderInfoList[0]);
@@ -339,6 +282,7 @@ void idle() {
 	GLfloat now = glutGet(GLUT_ELAPSED_TIME);
 	deltaTime = now - lastTime;					// In miliseconds
 	lastTime = now;
+	//SetCursorPos(window_height > 1, window_width > 1);
 
 }
 
@@ -356,7 +300,7 @@ int main(int argc, char **argv) {
 
 	glEnable(GL_DEPTH_TEST);
 
-	glutSetCursor(GLUT_CURSOR_NONE);
+	glutSetCursor(GLUT_CURSOR_FULL_CROSSHAIR);
 
 	glewInit();
 	glewExperimental = TRUE;
@@ -387,23 +331,32 @@ int main(int argc, char **argv) {
 	floorTexture.LoadTexture();
 
 	shaderInfoList = std::vector<ShaderInfo*>();
+	
+	std::vector<std::string> skyboxFaces;
+	skyboxFaces.push_back("Textures/Skybox/cloudtop_rt.tga");
+	skyboxFaces.push_back("Textures/Skybox/cloudtop_lf.tga");
+	skyboxFaces.push_back("Textures/Skybox/cloudtop_up.tga");
+	skyboxFaces.push_back("Textures/Skybox/cloudtop_dn.tga");
+	skyboxFaces.push_back("Textures/Skybox/cloudtop_bk.tga");
+	skyboxFaces.push_back("Textures/Skybox/cloudtop_ft.tga");
+
+	skybox = Skybox(skyboxFaces, "skyboxv.glsl", "skyboxf.glsl");
+	
 	init();
 
 	glutKeyboardFunc(keyboard);
 	glutReshapeFunc(reshape);
 	glutDisplayFunc(display);
 	glutIdleFunc(idle);
-	glutMotionFunc(mouseMove);
 	glutPassiveMotionFunc(mouseMove);
 	glutMouseFunc(mouseClick);
 
 	glutMainLoop();
 
-
 	return 1;
 }
 
-
+// Keyboard control
 void keyboard(unsigned char key, int x, int y)
 {
 
@@ -452,19 +405,17 @@ void reshape(int w, int h)
 
 }
 
-
 // Mouse control
-
-GLfloat lastx = 0.0f;
-GLfloat lasty = 0.0f;
-
 void mouseMove(int x, int y) {
 	
 	GLfloat xChange = 0.0f, yChange = 0.0f;
 		
-	xChange = (GLfloat)x - lastx;
-	yChange = lasty - (GLfloat)y;
 
+	GLfloat middleX = glutGet(GLUT_WINDOW_WIDTH) / 2;
+	GLfloat middleY = glutGet(GLUT_WINDOW_HEIGHT) / 2;
+
+	xChange = (GLfloat)x - middleX;
+	yChange = middleY - (GLfloat)y;
 	
 	if (abs(xChange) > 25.0f || abs(yChange) > 25.0f) {
 		xChange = 25.0f;
@@ -472,12 +423,11 @@ void mouseMove(int x, int y) {
 	}
 
 	camera.mouseControl(xChange, yChange);
-
-	lastx = (GLfloat)x;
-	lasty = (GLfloat)y;
-
+	
 	glutPostRedisplay();
 }
+
+
 void mouseClick(int button, int state, int x, int y) {
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
 		SelectInteractable(camera.getCameraPosition(), camera.getCameraDirection());

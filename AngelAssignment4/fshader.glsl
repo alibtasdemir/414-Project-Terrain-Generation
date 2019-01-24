@@ -111,7 +111,7 @@ float remap( float minval, float maxval, float curval )
 {
     return ( curval - minval ) / ( maxval - minval );
 } 
-//                       r      b    g
+//							 r      b    g
 const vec4 deepWater = vec4( 0.0, 0.0, 1.0, 1.0 );
 const vec4 water = vec4( 0.1, 0.1, 1.0, 1.0 );
 const vec4 sand = vec4( 0.8, 0.8, 0.0, 1.0 );

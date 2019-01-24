@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Angel_commons/Angel.h>
-#include "stb_image.h"
+#include "CommonValues.h"
 
 class Texture
 {
