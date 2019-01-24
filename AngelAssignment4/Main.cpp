@@ -326,6 +326,7 @@ void display(void) {
 		vec4 lightDirection = mainLightInteractable->interactable->transform[0];
 		vec3 lightDirectionV3 = vec3(lightDirection.x, lightDirection.y, lightDirection.z);
 		mainLight.UpdateDirection(lightDirectionV3);
+		mainLightInteractable->interactable->UpdatePhysics();
 	}
 
 	glutPostRedisplay();
@@ -396,7 +397,7 @@ int main(int argc, char **argv) {
 	glutMotionFunc(mouseMove);
 	glutPassiveMotionFunc(mouseMove);
 	glutMouseFunc(mouseClick);
-
+	
 	glutMainLoop();
 
 

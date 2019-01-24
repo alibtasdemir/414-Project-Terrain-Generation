@@ -4,6 +4,25 @@
 void Interactable::UpdateTransform() {
 	transform = Translate(position) * RotateZ(rotation.z) * RotateY(rotation.y) * RotateX(rotation.x);
 }
+
+void Interactable::UpdatePhysics()
+{
+	velocity.y -= (9.81f / 60.0f) * 0.001f;
+
+	// terrain collision check
+	vec3 collisionPointSelf = position - radius * vec3(0, 1, 0);
+	vec3 collisionPointTerrain = vec3( collisionPointSelf.x,PerlinNoise(collisionPointSelf.x, collisionPointSelf.z), collisionPointSelf.z);
+	if (collisionPointSelf.y < collisionPointTerrain.y) {
+		// contact
+		velocity.y = 0;
+		position = collisionPointTerrain + vec3(0, 1, 0) * radius;
+	}
+	position += velocity;
+
+
+	UpdateTransform();
+}
+
 bool Interactable::Raycast(vec3 origin, vec3 direction) {
 	vec3 E0 = origin;
 	vec3 E1 = origin + direction;
@@ -18,7 +37,7 @@ bool Interactable::Raycast(vec3 origin, vec3 direction) {
 
 	float t = ed / e2;
 
-	if (t < 0.0f) t = 0.0f; else if (t > 1.0f) t = 1.0f;
+	//if (t < 0.0f) t = 0.0f; else if (t > 1.0f) t = 1.0f; 
 
 	vec3 closestPoint = E0 + E * t;
 
@@ -30,20 +49,24 @@ bool Interactable::Raycast(vec3 origin, vec3 direction) {
 		return false;
 	}
 }
+
 std::vector<Interactable*> interactables = std::vector<Interactable*>();
 Interactable* selectedInteractable = NULL;
 
 Interactable::Interactable() {
+	radius = 0.5f;
 	interactables.push_back(this);
 	std::cout << "interactable list updated" << std::endl;
 }
 
 void SelectInteractable(vec3 camPos, vec3 camLook)
 {
+	std::cout << "trying to select an interactable, interactable count: " << interactables.size() << std::endl;
 	for (int i = 0; i < interactables.size(); i++) {
 		Interactable* element = interactables[i];
 		if (element->Raycast(camPos, camLook) == true) {
 			selectedInteractable = element;
+			std::cout << "selected new interactable" << std::endl;
 			return;
 		}
 	}

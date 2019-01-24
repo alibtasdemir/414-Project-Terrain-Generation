@@ -1,5 +1,6 @@
 #include <Angel_commons/Angel.h>
 #include <vector>
+#include "TerrainMesh.h"
 
 
 class Interactable
@@ -11,15 +12,13 @@ public:
 	vec3 rotation;
 	mat4 transform = mat4(1);
 
+	vec3 velocity;
+
 	Interactable();
 	void UpdateTransform();
-
+	
+	void UpdatePhysics();
 	bool Raycast(vec3 origin, vec3 direction);
-	/*    WATCH HERE
-	Interactable() {
-		interactables.push_back(this);
-	}
-	*/
 };
 
 
