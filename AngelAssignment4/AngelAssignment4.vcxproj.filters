@@ -100,5 +100,11 @@
     <None Include="vshader2.glsl">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="fSkybox.glsl">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="vSkybox.glsl">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

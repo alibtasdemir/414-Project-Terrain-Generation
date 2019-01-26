@@ -157,8 +157,10 @@
   <ItemGroup>
     <None Include="fshader.glsl" />
     <None Include="fshader2.glsl" />
+    <None Include="fSkybox.glsl" />
     <None Include="vshader.glsl" />
     <None Include="vshader2.glsl" />
+    <None Include="vSkybox.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

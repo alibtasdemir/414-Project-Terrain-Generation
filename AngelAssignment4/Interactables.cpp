@@ -57,6 +57,7 @@ Interactable::Interactable() {
 	radius = 0.5f;
 	interactables.push_back(this);
 	std::cout << "interactable list updated" << std::endl;
+	UpdateTransform();
 }
 
 void SelectInteractable(vec3 camPos, vec3 camLook)

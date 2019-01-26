@@ -65,8 +65,8 @@ InteractableMesh* mainLightInteractable;
 
 std::vector<ShaderInfo*> shaderInfoList;
 //////////////////////////////////////////////////////////
-
-
+ShaderInfo* skyboxShader;
+Mesh* skybox;
 std::vector<Mesh*> meshList;
 Camera camera;
 
@@ -172,8 +172,23 @@ Mesh* CreateCube(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat edge
 	return obj1;
 	//meshList.push_back(obj1);
 }
+/*
+Mesh* CreateSphere(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat radius) {
+	unsigned int indices[] = {
 
+	};
+	GLfloat vertices[] = {
+		// front
+		// X Y Z u v nx ny nz
 
+	};
+	calcNormals(indices, 12 * 3, vertices, 24 * 8, 8, 5);
+	Mesh *obj1 = new Mesh();
+	obj1->CreateMesh(vertices, indices, 24 * 8, 12 * 3);
+	return obj1;
+	meshList.push_back(obj1);
+}
+*/
 void createFloor() {
 	
 	unsigned int indices[] = {
@@ -254,6 +269,25 @@ void init(){
 		//InteractableMeshList.push_back(testCube);
 		mainLightInteractable = lightMesh;
 	}
+	{ // skybox
+		skyboxShader = new ShaderInfo();
+
+		program = InitShader("vSkybox.glsl", "fSkybox.glsl");
+		skyboxShader->program = program;
+
+		skyboxShader->uniformModel = glGetUniformLocation(program, "model");
+		skyboxShader->uniformProjection = glGetUniformLocation(program, "projection");
+		skyboxShader->uniformView = glGetUniformLocation(program, "view");
+		uniformDirectionalLight.uniformColor = glGetUniformLocation(program, "directionalLight.base.color");
+		uniformDirectionalLight.uniformAmbientIntensity = glGetUniformLocation(program, "directionalLight.base.ambientIntensity");
+		uniformDirectionalLight.uniformDirection = glGetUniformLocation(program, "directionalLight.direction");
+		uniformDirectionalLight.uniformDiffuseIntensity = glGetUniformLocation(program, "directionalLight.base.diffuseIntensity");
+		skyboxShader->uniformEyePos = glGetUniformLocation(program, "eyePosition");
+		skyboxShader->uniformSpecularIntensity = glGetUniformLocation(program, "material.specularIntensity");
+		skyboxShader->uniformShininess = glGetUniformLocation(program, "material.shininess");
+
+		skybox = CreateCube(0, 0, 0, 110);
+	}
 
 	//createFloor();
 	//CreateObjects();
@@ -323,18 +357,39 @@ void display(void) {
 	{
 		// handle and draw the interactable mesh for light source
 		DrawInteractableObject(mainLightInteractable, &floorTexture);
-		vec4 lightDirection = mainLightInteractable->interactable->transform[0];
+		vec4 lightDirection = -mainLightInteractable->interactable->transform[1] + vec4(0,0,0,2);
 		vec3 lightDirectionV3 = vec3(lightDirection.x, lightDirection.y, lightDirection.z);
+		
 		mainLight.UpdateDirection(lightDirectionV3);
 		mainLightInteractable->interactable->UpdatePhysics();
 	}
+
+	{
+		//draw and move skybox
+		vec4 eye = vec4(0,0,0,1);
+		vec4 at = -mainLightInteractable->interactable->transform[1];
+		//mat4 skyboxTransform = Translate(camera.getCameraPosition());
+		vec4 camPos = camera.getCameraPosition();
+		//mat4 skyboxTransform = LookAt(camPos, camPos - mainLightInteractable->interactable->transform[1], vec4(0, 1, 0, 1));
+		mat4 skyboxTransform = Translate(camPos) * RotateZ(mainLightInteractable->interactable->rotation.z) * RotateY(mainLightInteractable->interactable->rotation.y) * RotateX(mainLightInteractable->interactable->rotation.x);
+		//mat4 skyboxTransform = mat4(1);
+		
+		
+
+		DrawObject(skybox, &floorTexture, skyboxTransform, skyboxShader);
+	}
+	
 
 	glutPostRedisplay();
 	glutSwapBuffers();
 
 }
 
-
+void DisplayMatrix(mat4 matrix) {
+	for (int i = 0; i < 4; i++) {
+		
+	}
+}
 void idle() {
 
 	GLfloat now = glutGet(GLUT_ELAPSED_TIME);
