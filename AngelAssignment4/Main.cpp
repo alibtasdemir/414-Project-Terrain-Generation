@@ -62,7 +62,7 @@ struct InteractableMesh {
 };
 std::vector<InteractableMesh*> InteractableMeshList = std::vector<InteractableMesh*>();
 InteractableMesh* mainLightInteractable;
-
+float sunlight = 1;
 std::vector<ShaderInfo*> shaderInfoList;
 //////////////////////////////////////////////////////////
 ShaderInfo* skyboxShader;
@@ -362,6 +362,11 @@ void display(void) {
 		
 		mainLight.UpdateDirection(lightDirectionV3);
 		mainLightInteractable->interactable->UpdatePhysics();
+
+		sunlight = dot(lightDirectionV3, vec3(0, -1, 0));
+		sunlight = (sunlight + 1) / 2;
+		
+		mainLight.ambientIntensity = 0.2f * sunlight;
 	}
 
 	{
@@ -418,7 +423,7 @@ int main(int argc, char **argv) {
 	glewExperimental = TRUE;
 
 	mainLight = DirectionalLight(1.0f, 1.0f, 1.0f,
-								0.3f, 0.3f,
+								0.1f, 0.5f,
 							0.0f, 0.0f, -1.0f);
 
 	spotLight = SpotLight(0.0f, 1.0f, 1.0f,

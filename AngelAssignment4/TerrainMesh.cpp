@@ -39,7 +39,7 @@ float PerlinNoise(float x, float y) {
 		//b = remap(0, -0.6f, b) * 0.02f - 0.7f;
 		b = 0.2f;
 	}
-	return b * 10;
+	return b * (10);
 	
 	//return 1;
 	//return 0;

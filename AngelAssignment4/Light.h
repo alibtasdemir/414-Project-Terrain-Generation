@@ -11,7 +11,7 @@ public:
 
 	~Light();
 
-protected:
+public:
 
 	vec3 color;
 	GLfloat ambientIntensity;
