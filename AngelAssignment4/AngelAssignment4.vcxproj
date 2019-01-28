@@ -137,6 +137,7 @@
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshGenerator.cpp" />
     <ClCompile Include="PointLight.cpp" />
+    <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="SpotLight.cpp" />
     <ClCompile Include="TerrainMesh.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -144,14 +145,17 @@
   <ItemGroup>
     <ClInclude Include="..\Include\Angel_commons\Angel.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CommonValues.h" />
     <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Interactables.h" />
     <ClInclude Include="Light.h" />
+    <ClInclude Include="Main.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshGenerator.h" />
     <ClInclude Include="PerlinNoise.h" />
     <ClInclude Include="PointLight.h" />
+    <ClInclude Include="Skybox.h" />
     <ClInclude Include="SpotLight.h" />
     <ClInclude Include="TerrainMesh.h" />
     <ClInclude Include="Texture.h" />

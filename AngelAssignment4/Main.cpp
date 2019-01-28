@@ -1,98 +1,13 @@
-#define STB_IMAGE_IMPLEMENTATION
+#include "Main.h"
 
-#include <Angel_commons/Angel.h>
-#include <vector>
-
-
-#include "Mesh.h"
-#include "Camera.h"
-#include "Texture.h"
-#include "DirectionalLight.h"
-#include "SpotLight.h"
-#include "TerrainMesh.h"
-#include "Interactables.h"
-#include "MeshGenerator.h"
-
-#define GREEN 0.0f, 0.683f, 0.3125f
-#define BLACK 0.0f, 0.0f, 0.0f
-#define RED 0.99218f, 0.0f, 0.0f
-
-
-// Function predefinitions. //////////////////////////////
-void mouseMove(int x, int y);                       //////
-void mouseClick(int button, int state, int x, int y);/////
-void reshape(int w, int h);							//////
-void keyboard(unsigned char key, int x, int y);		//////
-//////////////////////////////////////////////////////////
-
-
-// Shader Pointers ///////////////////////////////////////
-struct {								
-	GLuint uniformColor;
-	GLuint uniformAmbientIntensity;
-	GLuint uniformDiffuseIntensity;
-
-	GLuint uniformDirection;
-} uniformDirectionalLight;
-
-struct {
-	GLuint uniformColor;
-	GLuint uniformAmbientIntensity;
-	GLuint uniformDiffuseIntensity;
-
-	GLuint uniformPosition;
-	GLuint uniformConstant;
-	GLuint uniformLinear;
-	GLuint uniformExponent;
-
-	GLuint uniformDirection;
-	GLuint uniformEdge;
-} uniformSpotLight;
-
-struct ShaderInfo {
-	GLuint program = 0;
-	GLuint uniformModel = 0, uniformProjection = 0,
-		uniformView = 0, uniformEyePos = 0,
-		uniformSpecularIntensity = 0, uniformShininess = 0;
-};
-
-struct InteractableMesh {
-	ShaderInfo* shaderInfo;
-	Mesh* mesh;
-	Interactable* interactable;
-};
-std::vector<InteractableMesh*> InteractableMeshList = std::vector<InteractableMesh*>();
-InteractableMesh* mainLightInteractable;
-float sunlight = 1;
-std::vector<ShaderInfo*> shaderInfoList;
 //////////////////////////////////////////////////////////
 ShaderInfo* skyboxShader;
 Mesh* skybox;
-std::vector<Mesh*> meshList;
-Camera camera;
 
 Texture cubeTexture;
 Texture floorTexture;
 
 GLfloat xChange, yChange;
-DirectionalLight mainLight;
-
-SpotLight spotLight;
-
-
-//  variables representing the window size
-int window_height = 1366,
-		window_width = 768;
-const float toRadians = 3.14159265f / 180.0f;
-
-
-int window;					// glut window.
-
-GLuint program;				// Shader program.
-
-GLfloat deltaTime = 0.0f, lastTime = 0.0f;
-
-
 
 
 void CreateTerrain() {
@@ -341,7 +256,8 @@ int main(int argc, char **argv) {
 
 	glEnable(GL_DEPTH_TEST);
 
-	glutSetCursor(GLUT_CURSOR_NONE);
+	//glutSetCursor(GLUT_CURSOR_NONE);
+	glutSetCursor(GLUT_CURSOR_FULL_CROSSHAIR);
 
 	glewInit();
 	glewExperimental = TRUE;
@@ -372,6 +288,9 @@ int main(int argc, char **argv) {
 	floorTexture.LoadTexture();
 
 	shaderInfoList = std::vector<ShaderInfo*>();
+
+
+
 	init();
 
 	glutKeyboardFunc(keyboard);
@@ -439,18 +358,17 @@ void reshape(int w, int h)
 
 
 // Mouse control
-
-GLfloat lastx = 0.0f;
-GLfloat lasty = 0.0f;
-
 void mouseMove(int x, int y) {
-	
-	GLfloat xChange = 0.0f, yChange = 0.0f;
-		
-	xChange = (GLfloat)x - lastx;
-	yChange = lasty - (GLfloat)y;
 
-	
+	GLfloat xChange = 0.0f, yChange = 0.0f;
+
+
+	GLfloat middleX = glutGet(GLUT_WINDOW_WIDTH) / 2;
+	GLfloat middleY = glutGet(GLUT_WINDOW_HEIGHT) / 2;
+
+	xChange = (GLfloat)x - middleX;
+	yChange = middleY - (GLfloat)y;
+
 	if (abs(xChange) > 25.0f || abs(yChange) > 25.0f) {
 		xChange = 25.0f;
 		yChange = 25.0f;
@@ -458,11 +376,9 @@ void mouseMove(int x, int y) {
 
 	camera.mouseControl(xChange, yChange);
 
-	lastx = (GLfloat)x;
-	lasty = (GLfloat)y;
-
 	glutPostRedisplay();
 }
+
 void mouseClick(int button, int state, int x, int y) {
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
 		SelectInteractable(camera.getCameraPosition(), camera.getCameraDirection());

@@ -99,6 +99,9 @@ void Camera::update() {
 	right = normalize(cross(front, worldUp));
 
 	up = normalize(cross(right, front));
+
+	glutWarpPointer(glutGet(GLUT_WINDOW_WIDTH) / 2,
+		glutGet(GLUT_WINDOW_HEIGHT) / 2);
 }
 
 Camera::~Camera()
