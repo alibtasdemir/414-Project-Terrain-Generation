@@ -135,6 +135,7 @@
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="MeshGenerator.cpp" />
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="SpotLight.cpp" />
     <ClCompile Include="TerrainMesh.cpp" />
@@ -148,6 +149,7 @@
     <ClInclude Include="Interactables.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="MeshGenerator.h" />
     <ClInclude Include="PerlinNoise.h" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="SpotLight.h" />

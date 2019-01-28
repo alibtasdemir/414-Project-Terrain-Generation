@@ -119,5 +119,7 @@ void main()
 	//finalColor += CalcPointLights();
 	finalColor += CalcSpotLight(spotLight);
 
-	color = texture(theTexture, TexCoord) * finalColor;	
+	color = texture(theTexture, TexCoord) * finalColor;
+	
+
 }

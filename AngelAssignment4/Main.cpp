@@ -11,6 +11,7 @@
 #include "SpotLight.h"
 #include "TerrainMesh.h"
 #include "Interactables.h"
+#include "MeshGenerator.h"
 
 #define GREEN 0.0f, 0.683f, 0.3125f
 #define BLACK 0.0f, 0.0f, 0.0f
@@ -93,102 +94,25 @@ GLfloat deltaTime = 0.0f, lastTime = 0.0f;
 
 
 
+
 void CreateTerrain() {
 	Mesh *obj1 = GenerateTerrainMesh(80, 80, 0.1f);
 	meshList.push_back(obj1);
 }
 Mesh* CreateCube(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat edgeLength) {
+	/*
+	PreMesh* preMesh = CreateCubePreMesh(centerX, centerY, centerZ, edgeLength);
+	Mesh* mesh = CreateMesh(preMesh);
 	
-	printf("Cube created at pos: %f, %f, %f \n", centerX, centerY, centerZ);
-
-	GLfloat halfSideLength = edgeLength * 0.5f;
-	
-	unsigned int indices[] = {
-		0, 1, 2,
-		2, 3, 0,
-		
-		4, 5, 6,
-		6, 7, 4,
-
-		8, 9, 10,
-		10, 11, 8,
-
-		12, 13, 14,
-		14, 15, 12,
-
-		16, 17, 18,
-		18, 19, 16,
-
-		20, 21, 22,
-		22, 23, 20
-	};
-	
-	
-	GLfloat vertices[] = {
-		// front
-//				X								Y					Z					u		v		nx	  ny	nz
-
-		centerX - halfSideLength, centerY + halfSideLength, centerZ + halfSideLength,	0.0f, 1.0f,		0.0f, 0.0f, 0.0f,	// top-left
-		centerX + halfSideLength, centerY + halfSideLength, centerZ + halfSideLength,	1.0f, 1.0f,		0.0f, 0.0f, 0.0f,	// top-right
-		centerX + halfSideLength, centerY - halfSideLength, centerZ + halfSideLength,	1.0f, 0.0f,		0.0f, 0.0f, 0.0f,	// bottom-right
-		centerX - halfSideLength, centerY - halfSideLength, centerZ + halfSideLength,	0.0f, 0.0f,		0.0f, 0.0f, 0.0f,	// bottom-left
-
-		// back
-		centerX - halfSideLength, centerY + halfSideLength, centerZ - halfSideLength,	0.0f, 1.0f,		0.0f, 0.0f, 0.0f,	// top-left
-		centerX + halfSideLength, centerY + halfSideLength, centerZ - halfSideLength,	1.0f, 1.0f,		0.0f, 0.0f, 0.0f,	// top-right
-		centerX + halfSideLength, centerY - halfSideLength, centerZ - halfSideLength,	1.0f, 0.0f,		0.0f, 0.0f, 0.0f,	// bottom-right
-		centerX - halfSideLength, centerY - halfSideLength, centerZ - halfSideLength,	0.0f, 0.0f,		0.0f, 0.0f, 0.0f,	// bottom-left
-		
-		// left
-		centerX - halfSideLength, centerY + halfSideLength, centerZ + halfSideLength,	0.0f, 1.0f,		0.0f, 0.0f, 0.0f,	// top-left
-		centerX - halfSideLength, centerY + halfSideLength, centerZ - halfSideLength,	1.0f, 1.0f,		0.0f, 0.0f, 0.0f,	// top-right
-		centerX - halfSideLength, centerY - halfSideLength, centerZ - halfSideLength,	1.0f, 0.0f,		0.0f, 0.0f, 0.0f,	// bottom-right
-		centerX - halfSideLength, centerY - halfSideLength, centerZ + halfSideLength,	0.0f, 0.0f,		0.0f, 0.0f, 0.0f,	// bottom-left
-
-		// right
-		centerX + halfSideLength, centerY + halfSideLength, centerZ + halfSideLength,	0.0f, 1.0f,		0.0f, 0.0f, 0.0f,	// top-left
-		centerX + halfSideLength, centerY + halfSideLength, centerZ - halfSideLength,	1.0f, 1.0f,		0.0f, 0.0f, 0.0f,	// top-right
-		centerX + halfSideLength, centerY - halfSideLength, centerZ - halfSideLength,	1.0f, 0.0f,		0.0f, 0.0f, 0.0f,	// bottom-right
-		centerX + halfSideLength, centerY - halfSideLength, centerZ + halfSideLength,	0.0f, 0.0f,		0.0f, 0.0f, 0.0f,	// bottom-left
-
-		// top
-		centerX - halfSideLength, centerY + halfSideLength, centerZ + halfSideLength,	0.0f, 1.0f,		0.0f, 0.0f, 0.0f,	// top-left
-		centerX - halfSideLength, centerY + halfSideLength, centerZ - halfSideLength,	1.0f, 1.0f,		0.0f, 0.0f, 0.0f,	// top-right
-		centerX + halfSideLength, centerY + halfSideLength, centerZ - halfSideLength,	1.0f, 0.0f,		0.0f, 0.0f, 0.0f,	// bottom-right
-		centerX + halfSideLength, centerY + halfSideLength, centerZ + halfSideLength,	0.0f, 0.0f,		0.0f, 0.0f, 0.0f,	// bottom-left
-
-		// bottom
-		centerX - halfSideLength, centerY - halfSideLength, centerZ + halfSideLength,	0.0f, 1.0f,		0.0f, 0.0f, 0.0f,	// top-left
-		centerX - halfSideLength, centerY - halfSideLength, centerZ - halfSideLength,	1.0f, 1.0f,		0.0f, 0.0f, 0.0f,	// top-right
-		centerX + halfSideLength, centerY - halfSideLength, centerZ - halfSideLength,	1.0f, 0.0f,		0.0f, 0.0f, 0.0f,	// bottom-right
-		centerX + halfSideLength, centerY - halfSideLength, centerZ + halfSideLength,	0.0f, 0.0f,		0.0f, 0.0f, 0.0f,	// bottom-left
-		
-	};
-
-	calcNormals(indices, 12*3, vertices, 24*8, 8, 5);
-	Mesh *obj1 = new Mesh();
-	obj1->CreateMesh(vertices, indices, 24*8, 12 * 3);
-
-	return obj1;
-	//meshList.push_back(obj1);
+	return mesh;
+	*/
+	PreMesh* preMesh = CreateCubePreMesh(centerX, centerY, centerZ, edgeLength);
+	PreMesh* preMesh2 = CreateCubePreMesh(centerX, centerY + 1, centerZ, edgeLength* 0.5f);
+	PreMesh* sum = PreMeshSum(preMesh2, preMesh);
+	Mesh* mesh = CreateMesh(sum);
+	return mesh;
 }
-/*
-Mesh* CreateSphere(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat radius) {
-	unsigned int indices[] = {
 
-	};
-	GLfloat vertices[] = {
-		// front
-		// X Y Z u v nx ny nz
-
-	};
-	calcNormals(indices, 12 * 3, vertices, 24 * 8, 8, 5);
-	Mesh *obj1 = new Mesh();
-	obj1->CreateMesh(vertices, indices, 24 * 8, 12 * 3);
-	return obj1;
-	meshList.push_back(obj1);
-}
-*/
 void createFloor() {
 	
 	unsigned int indices[] = {
@@ -216,7 +140,7 @@ void CreateObjects(){
 	for (size_t i = 0; i < 25; i++)
 	{
 		for (size_t j = 0; j < 25; j++) {
-			CreateCube((-10.0f + (j * (cube_size + sep))), -1.0f + (cube_size * 0.5f), (10.0f - (i * (cube_size + sep))), cube_size);
+			CreateCubePreMesh((-10.0f + (j * (cube_size + sep))), -1.0f + (cube_size * 0.5f), (10.0f - (i * (cube_size + sep))), cube_size);
 		}
 	}
 }
