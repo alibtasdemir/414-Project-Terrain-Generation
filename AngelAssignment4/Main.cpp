@@ -44,7 +44,7 @@ void init(){
 		newShaderInfo->uniformShininess = glGetUniformLocation(program, "material.shininess");
 		newShaderInfo->u_time = glGetUniformLocation(program, "u_time");
 		//std::cout << "[************u_time location at init(): " << newShaderInfo->u_time  << "]" << std::endl;
-		printf("*******************uniform time: %i\n", newShaderInfo->u_time);
+		
 		shaderInfoList.insert(shaderInfoList.end(), newShaderInfo);
 	}
 	{ // creating shader program
@@ -160,7 +160,7 @@ void DrawObject(Mesh* mesh, Texture* texture, mat4 transformation, ShaderInfo* s
 
 
 	GLfloat current_time = glutGet(GLUT_ELAPSED_TIME)*0.001;
-	std::cout << "[u_time location: " << shaderInfo->u_time << "]" << std::endl;
+	
 	glUniform1fv(shaderInfo->u_time, 1, &current_time);
 
 	glUniformMatrix4fv(shaderInfo->uniformProjection, 1, GL_TRUE, projection);
@@ -206,8 +206,8 @@ void display(void) {
 		sunlight = (sunlight + 1) / 2;
 		
 		mainLight.ambientIntensity = 0.2f * sunlight;
-		if (sunlight > 0.6f) {
-			mainLight.diffuseIntensity = ((sunlight - 0.6f) / 4) * 10;
+		if (sunlight > 0.4f) {
+			mainLight.diffuseIntensity = ((sunlight - 0.4f) / 6) * 8;
 		}
 		else {
 			// 1,0.6   to   1, 0
@@ -294,7 +294,7 @@ int main(int argc, char **argv) {
 
 	shaderInfoList = std::vector<ShaderInfo*>();
 
-
+	glutFullScreen();
 	init();
 
 	glutKeyboardFunc(keyboard);
@@ -322,7 +322,7 @@ void keyboard(unsigned char key, int x, int y)
 		break;
 	default:
 		//printf("Key pressed");
-		camera.keyControl(key, (deltaTime / 100.0f));
+		camera.keyControl(key, (deltaTime / 1000.0f));
 		break;
 	}
 	MoveSelectedInteractable(key);

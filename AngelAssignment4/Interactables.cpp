@@ -76,7 +76,7 @@ void SelectInteractable(vec3 camPos, vec3 camLook)
 void MoveSelectedInteractable(char input)
 {
 	float move = 1;
-	float rotate = 0.1f;
+	float rotate = 1;
 	if (selectedInteractable == NULL) { return; }
 	switch (input)
 	{
@@ -107,27 +107,27 @@ void MoveSelectedInteractable(char input)
 
 		//rotations
 	case 'u':// right
-		selectedInteractable->rotation += vec3(1, 0, 0) * move;
+		selectedInteractable->rotation += vec3(1, 0, 0) * rotate;
 		selectedInteractable->UpdateTransform();
 		break;
 	case 'j':// left
-		selectedInteractable->rotation += vec3(-1, 0, 0) * move;
+		selectedInteractable->rotation += vec3(-1, 0, 0) * rotate;
 		selectedInteractable->UpdateTransform();
 		break;
 	case 'ý':// up
-		selectedInteractable->rotation += vec3(0, 1, 0) * move;
+		selectedInteractable->rotation += vec3(0, 1, 0) * rotate;
 		selectedInteractable->UpdateTransform();
 		break;
 	case 'k':// down
-		selectedInteractable->rotation += vec3(0, -1, 0) * move;
+		selectedInteractable->rotation += vec3(0, -1, 0) * rotate;
 		selectedInteractable->UpdateTransform();
 		break;
 	case 'o':// forward
-		selectedInteractable->rotation += vec3(0, 0, 1) * move;
+		selectedInteractable->rotation += vec3(0, 0, 1) * rotate;
 		selectedInteractable->UpdateTransform();
 		break;
 	case 'l':// back
-		selectedInteractable->rotation += vec3(0, 0, -1) * move;
+		selectedInteractable->rotation += vec3(0, 0, -1) * rotate;
 		selectedInteractable->UpdateTransform();
 		break;
 
