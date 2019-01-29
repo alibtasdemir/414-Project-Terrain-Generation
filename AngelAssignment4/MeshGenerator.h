@@ -14,4 +14,5 @@ PreMesh * CreateArrowPreMesh(GLfloat centerX, GLfloat centerY, GLfloat centerZ);
 
 
 PreMesh * PreMeshSum(PreMesh * p0, PreMesh * p1);
+void DisplayPreMeshInfo(PreMesh * preMesh);
 Mesh * CreateMesh(PreMesh * preMesh);

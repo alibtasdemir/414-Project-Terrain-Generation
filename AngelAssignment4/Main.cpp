@@ -15,17 +15,26 @@ void CreateTerrain() {
 	meshList.push_back(obj1);
 }
 Mesh* CreateCube(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat edgeLength) {
-	/*
+	
 	PreMesh* preMesh = CreateCubePreMesh(centerX, centerY, centerZ, edgeLength);
 	Mesh* mesh = CreateMesh(preMesh);
 	
 	return mesh;
-	*/
+	
+	/*
 	PreMesh* preMesh = CreateCubePreMesh(centerX, centerY, centerZ, edgeLength);
 	PreMesh* preMesh2 = CreateCubePreMesh(centerX, centerY + 1, centerZ, edgeLength* 0.5f);
+
 	PreMesh* sum = PreMeshSum(preMesh2, preMesh);
 	Mesh* mesh = CreateMesh(sum);
 	return mesh;
+	*/
+
+	/*
+	PreMesh* arrow = CreateArrowPreMesh(centerX,centerY,centerZ);
+	Mesh* mesh = CreateMesh(arrow);
+	return mesh;
+	*/
 }
 
 void createFloor() {
@@ -100,7 +109,7 @@ void init(){
 		//shaderInfoList.insert(shaderInfoList.end(), newShaderInfo);
 		
 		InteractableMesh* lightMesh = new InteractableMesh();
-		lightMesh->mesh = CreateCube(0, 0, 0, 1);
+		lightMesh->mesh = CreateMesh(CreateArrowPreMesh(0, 0, 0));// CreateCube(0, 0, 0, 1);
 		lightMesh->shaderInfo = newShaderInfo;
 		lightMesh->interactable = new Interactable();
 		lightMesh->interactable->position = vec3(0, 8, -5);

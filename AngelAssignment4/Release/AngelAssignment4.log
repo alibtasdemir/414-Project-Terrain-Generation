@@ -1,24 +1,17 @@
-﻿  Main.cpp
-c:\users\ali baran taşdemir\desktop\masterbranch\414project\include\angel_commons\angel.h(63): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
-c:\users\ali baran taşdemir\desktop\masterbranch\414project\include\angel_commons\mat.h(707): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
-c:\users\ali baran taşdemir\desktop\masterbranch\414project\include\angel_commons\mat.h(708): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
-c:\users\ali baran taşdemir\desktop\masterbranch\414project\include\angel_commons\mat.h(709): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
-c:\users\ali baran taşdemir\desktop\masterbranch\414project\include\angel_commons\mat.h(730): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
-c:\users\ali baran taşdemir\desktop\masterbranch\414project\include\angel_commons\mat.h(732): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
-c:\users\ali baran taşdemir\desktop\masterbranch\414project\include\angel_commons\mat.h(735): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
-c:\users\ali baran taşdemir\desktop\masterbranch\414project\include\angel_commons\mat.h(752): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
-c:\users\ali baran taşdemir\desktop\masterbranch\414project\angelassignment4\main.cpp(155): warning C4244: 'argument': conversion from 'GLuint' to 'GLfloat', possible loss of data
-c:\users\ali baran taşdemir\desktop\masterbranch\414project\angelassignment4\main.cpp(154): warning C4244: 'argument': conversion from 'GLuint' to 'GLfloat', possible loss of data
-c:\users\ali baran taşdemir\desktop\masterbranch\414project\angelassignment4\main.cpp(153): warning C4244: 'argument': conversion from 'GLuint' to 'GLfloat', possible loss of data
-c:\users\ali baran taşdemir\desktop\masterbranch\414project\angelassignment4\main.cpp(152): warning C4244: 'argument': conversion from 'GLuint' to 'GLfloat', possible loss of data
-c:\users\ali baran taşdemir\desktop\masterbranch\414project\angelassignment4\main.cpp(191): warning C4018: '<': signed/unsigned mismatch
-c:\users\ali baran taşdemir\desktop\masterbranch\414project\angelassignment4\main.cpp(239): warning C4244: 'initializing': conversion from 'int' to 'GLfloat', possible loss of data
-c:\users\ali baran taşdemir\desktop\masterbranch\414project\angelassignment4\main.cpp(339): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\ali baran taşdemir\desktop\masterbranch\414project\angelassignment4\main.cpp(366): warning C4244: 'initializing': conversion from 'int' to 'GLfloat', possible loss of data
-c:\users\ali baran taşdemir\desktop\masterbranch\414project\angelassignment4\main.cpp(367): warning C4244: 'initializing': conversion from 'int' to 'GLfloat', possible loss of data
+﻿  MeshGenerator.cpp
+c:\users\hp\documents\bbm412 project\414project\include\angel_commons\angel.h(63): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
+c:\users\hp\documents\bbm412 project\414project\include\angel_commons\mat.h(707): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\hp\documents\bbm412 project\414project\include\angel_commons\mat.h(708): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\hp\documents\bbm412 project\414project\include\angel_commons\mat.h(709): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\hp\documents\bbm412 project\414project\include\angel_commons\mat.h(730): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\hp\documents\bbm412 project\414project\include\angel_commons\mat.h(732): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\hp\documents\bbm412 project\414project\include\angel_commons\mat.h(735): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\hp\documents\bbm412 project\414project\include\angel_commons\mat.h(752): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\hp\documents\bbm412 project\414project\angelassignment4\meshgenerator.cpp(142): warning C4018: '<': signed/unsigned mismatch
+c:\users\hp\documents\bbm412 project\414project\angelassignment4\meshgenerator.cpp(176): warning C4018: '<': signed/unsigned mismatch
   Generating code
-  1 of 899 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+  3 of 911 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+    1 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
-  AngelAssignment4.vcxproj -> C:\Users\Ali Baran Taşdemir\Desktop\MasterBranch\414Project\Release\AngelAssignment4.exe
+  AngelAssignment4.vcxproj -> C:\Users\Hp\Documents\bbm412 project\414Project\Release\AngelAssignment4.exe
