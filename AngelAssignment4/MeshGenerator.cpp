@@ -1,6 +1,98 @@
 #include "MeshGenerator.h"
+PreMesh* CreateQuadPreMesh(vec3 v0, vec3 v1, vec3 v2, vec3 v3) {
+			//    quad
+			//   3   2
+			//   0   1
+	std::vector<GLfloat> vertices{
+		v0.x, v0.y, v0.z, 0,0,0,0,0,
+		v1.x, v1.y, v1.z, 1,0,0,0,0,
+		v2.x, v2.y, v2.z, 1,1,0,0,0,
+		v3.x, v3.y, v3.z, 0,1,0,0,0
+	};
+	std::vector<unsigned int> indices{
+		0, 1, 2,
+		0, 2, 3
+	};
 
+	PreMesh* quadPreMesh = new PreMesh();
+	quadPreMesh->indices = indices;
+	quadPreMesh->vertices = vertices;
+	return quadPreMesh;
+}
+PreMesh* CreateTorusPreMesh() {
+	float radius = 2;
+	float thickness = 1;
 
+	PreMesh* torusPreMesh = new PreMesh();
+	float pi = 3.14159265f;
+	vec3 center = vec3(0, 0, 0);
+	float angleStep = pi / 10;
+
+	
+
+	float angleOut = 0;
+	float angleIn = 0;
+	for (angleOut = 0; angleOut <= pi * 2; angleOut += angleStep) {
+		
+
+		for (angleIn = 0; angleIn <= pi * 2; angleIn += angleStep) {
+			std::vector<vec3> vertices = std::vector<vec3>();
+			{ // v0
+				float x = cos(angleOut) * radius;
+				float z = sin(angleOut) * radius;
+				vec3 forward = cross(vec3(x, 0, z), vec3(0, 1, 0)) * thickness;
+				vec3 cutCenter = center + vec3(x, 0, z) * thickness;
+
+				vec3 onOutDir = cos(angleIn) * (normalize(cutCenter));
+				vec3 onUpDir = sin(angleIn) * vec3(0, 1, 0);
+				vec3 onCut = cutCenter + onOutDir + onUpDir;
+				vec3 v = onCut;
+				vertices.push_back(v);
+			}
+			{ // v1
+				float x = cos(angleOut + angleStep) * radius;
+				float z = sin(angleOut + angleStep) * radius;
+				vec3 forward = cross(vec3(x, 0, z), vec3(0, 1, 0)) * thickness;
+				vec3 cutCenter = center + vec3(x, 0, z) * thickness;
+
+				vec3 onOutDir = cos(angleIn) * (normalize(cutCenter));
+				vec3 onUpDir = sin(angleIn) * vec3(0, 1, 0);
+				vec3 onCut = cutCenter + onOutDir + onUpDir;
+				vec3 v = onCut;
+				vertices.push_back(v);
+			}
+			{ // v2
+				float x = cos(angleOut) * radius;
+				float z = sin(angleOut) * radius;
+				vec3 forward = cross(vec3(x, 0, z), vec3(0, 1, 0)) * thickness;
+				vec3 cutCenter = center + vec3(x, 0, z) * thickness;
+
+				vec3 onOutDir = cos(angleIn + angleStep) * (normalize(cutCenter));
+				vec3 onUpDir = sin(angleIn + angleStep) * vec3(0, 1, 0);
+				vec3 onCut = cutCenter + onOutDir + onUpDir;
+				vec3 v = onCut;
+				vertices.push_back(v);
+			}
+			{ // v3
+				float x = cos(angleOut + angleStep) * radius;
+				float z = sin(angleOut + angleStep) * radius;
+				vec3 forward = cross(vec3(x, 0, z), vec3(0, 1, 0)) * thickness;
+				vec3 cutCenter = center + vec3(x, 0, z) * thickness;
+
+				vec3 onOutDir = cos(angleIn + angleStep) * (normalize(cutCenter));
+				vec3 onUpDir = sin(angleIn + angleStep) * vec3(0, 1, 0);
+				vec3 onCut = cutCenter + onOutDir + onUpDir;
+				vec3 v = onCut;
+				vertices.push_back(v);
+			}
+			PreMesh* quadPreMesh = CreateQuadPreMesh(vertices[1], vertices[3], vertices[2], vertices[0]);
+			torusPreMesh = PreMeshSum(torusPreMesh, quadPreMesh);
+			
+		}
+	}
+
+	return torusPreMesh;
+}
 PreMesh* CreateCubePreMesh(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat edgeLength) {
 
 	printf("Cube created at pos: %f, %f, %f \n", centerX, centerY, centerZ);
@@ -117,13 +209,14 @@ PreMesh * CreateArrowPreMesh(GLfloat centerX, GLfloat centerY, GLfloat centerZ)
 //	PreMesh* arrowPreMesh = PreMeshSum(pyramidPreMesh, cube); 
 	PreMesh* arrowPreMesh = PreMeshSum(cube, pyramidPreMesh);
 	
+	/*
 	std::cout << "pyramid" << std::endl;
 	DisplayPreMeshInfo(pyramidPreMesh);
 	std::cout << "cube" << std::endl;
 	DisplayPreMeshInfo(cube);
 	std::cout << "sum" << std::endl;
 	DisplayPreMeshInfo(arrowPreMesh);
-
+	*/
 	return arrowPreMesh;
 }
 PreMesh * PreMeshSum(PreMesh * p0, PreMesh * p1)
@@ -191,3 +284,5 @@ Mesh* CreateMesh(PreMesh* preMesh) {
 
 	return obj1;
 }
+
+

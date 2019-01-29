@@ -27,7 +27,7 @@ void main() {
 	float u = ((model * vec4(pos, 1.0f)).y);
 
 	if (u <= 0.2 * terrainYSize) {
-		pos.y = waveMotion(pos.y, u_time, 0.1f, 0.02f, 0.02f);
+		//pos.y = waveMotion(pos.y, u_time, 0.1f, 0.02f, 0.02f);
 	}
 	
 	gl_Position = (projection) * (view) * (model) * vec4(pos, 1.0f);

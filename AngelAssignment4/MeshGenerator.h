@@ -9,6 +9,10 @@ struct PreMesh
 	std::vector<GLfloat> vertices;
 };
 
+PreMesh * CreateQuadPreMesh(vec3 v0, vec3 v1, vec3 v2, vec3 v3);
+
+PreMesh * CreateTorusPreMesh();
+
 PreMesh * CreateCubePreMesh(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat edgeLength);
 PreMesh * CreateArrowPreMesh(GLfloat centerX, GLfloat centerY, GLfloat centerZ);
 

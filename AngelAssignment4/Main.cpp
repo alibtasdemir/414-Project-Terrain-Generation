@@ -19,54 +19,11 @@ Mesh* CreateCube(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat edge
 	Mesh* mesh = CreateMesh(preMesh);
 	
 	return mesh;
-	
-	/*
-	PreMesh* preMesh = CreateCubePreMesh(centerX, centerY, centerZ, edgeLength);
-	PreMesh* preMesh2 = CreateCubePreMesh(centerX, centerY + 1, centerZ, edgeLength* 0.5f);
-
-	PreMesh* sum = PreMeshSum(preMesh2, preMesh);
-	Mesh* mesh = CreateMesh(sum);
-	return mesh;
-	*/
-
-	/*
-	PreMesh* arrow = CreateArrowPreMesh(centerX,centerY,centerZ);
-	Mesh* mesh = CreateMesh(arrow);
-	return mesh;
-	*/
 }
 
-void createFloor() {
-	
-	unsigned int indices[] = {
-		0, 2, 1,
-		1, 2, 3
-	};
 
-	GLfloat vertices[] = {
-		-20.0f, -1.0f, -20.0f,	0.0f,  0.0f,	0.0f, -1.0f, 0.0f,
-		 20.0f, -1.0f, -20.0f,	20.0f, 0.0f,	0.0f, -1.0f, 0.0f,
-		-20.0f, -1.0f,  20.0f,	0.0f,  20.0f,	0.0f, -1.0f, 0.0f,
-		 20.0f, -1.0f,  20.0f,	20.0f, 20.0f,	0.0f, -1.0f, 0.0f	
-	};
 
-	Mesh *obj = new Mesh();
-	obj->CreateMesh(vertices, indices, 32, 6);
-	meshList.push_back(obj);
 
-}
-
-void CreateObjects(){
-	GLfloat cube_size = 0.25f;
-	GLfloat sep = 0.5f;
-
-	for (size_t i = 0; i < 25; i++)
-	{
-		for (size_t j = 0; j < 25; j++) {
-			CreateCubePreMesh((-10.0f + (j * (cube_size + sep))), -1.0f + (cube_size * 0.5f), (10.0f - (i * (cube_size + sep))), cube_size);
-		}
-	}
-}
 
 void init(){
 	{ // creating shader program
@@ -86,6 +43,8 @@ void init(){
 		newShaderInfo->uniformSpecularIntensity = glGetUniformLocation(program, "material.specularIntensity");
 		newShaderInfo->uniformShininess = glGetUniformLocation(program, "material.shininess");
 		newShaderInfo->u_time = glGetUniformLocation(program, "u_time");
+		//std::cout << "[************u_time location at init(): " << newShaderInfo->u_time  << "]" << std::endl;
+		printf("*******************uniform time: %i\n", newShaderInfo->u_time);
 		shaderInfoList.insert(shaderInfoList.end(), newShaderInfo);
 	}
 	{ // creating shader program
@@ -108,7 +67,11 @@ void init(){
 		//shaderInfoList.insert(shaderInfoList.end(), newShaderInfo);
 		
 		InteractableMesh* lightMesh = new InteractableMesh();
-		lightMesh->mesh = CreateMesh(CreateArrowPreMesh(0, 0, 0));// CreateCube(0, 0, 0, 1);
+		lightMesh->mesh = CreateMesh(CreateArrowPreMesh(0, 0, 0));
+		//PreMesh* torusPreMesh = CreateTorusPreMesh();
+		//DisplayPreMeshInfo(torusPreMesh);
+		//lightMesh->mesh = CreateMesh(torusPreMesh);
+		
 		lightMesh->shaderInfo = newShaderInfo;
 		lightMesh->interactable = new Interactable();
 		lightMesh->interactable->position = vec3(0, 8, -5);
@@ -133,7 +96,35 @@ void init(){
 		skyboxShader->uniformSpecularIntensity = glGetUniformLocation(program, "material.specularIntensity");
 		skyboxShader->uniformShininess = glGetUniformLocation(program, "material.shininess");
 
-		skybox = CreateCube(0, 0, 0, 110);
+		skybox = CreateCube(0, 0, 0, 300);
+	}
+	{
+		// torus
+		ShaderInfo* newShaderInfo = new ShaderInfo();
+
+		program = InitShader("vshader2.glsl", "fshader2.glsl");
+		newShaderInfo->program = program;
+		std::cout << "program: " << program << std::endl;
+		newShaderInfo->uniformModel = glGetUniformLocation(program, "model");
+		newShaderInfo->uniformProjection = glGetUniformLocation(program, "projection");
+		newShaderInfo->uniformView = glGetUniformLocation(program, "view");
+		uniformDirectionalLight.uniformColor = glGetUniformLocation(program, "directionalLight.base.color");
+		uniformDirectionalLight.uniformAmbientIntensity = glGetUniformLocation(program, "directionalLight.base.ambientIntensity");
+		uniformDirectionalLight.uniformDirection = glGetUniformLocation(program, "directionalLight.direction");
+		uniformDirectionalLight.uniformDiffuseIntensity = glGetUniformLocation(program, "directionalLight.base.diffuseIntensity");
+		newShaderInfo->uniformEyePos = glGetUniformLocation(program, "eyePosition");
+		newShaderInfo->uniformSpecularIntensity = glGetUniformLocation(program, "material.specularIntensity");
+		newShaderInfo->uniformShininess = glGetUniformLocation(program, "material.shininess");
+
+		//shaderInfoList.insert(shaderInfoList.end(), newShaderInfo);
+
+		InteractableMesh* torusMesh = new InteractableMesh();
+		torusMesh->mesh = CreateMesh(CreateTorusPreMesh());// CreateCube(0, 0, 0, 1);
+		torusMesh->shaderInfo = newShaderInfo;
+		torusMesh->interactable = new Interactable();
+		torusMesh->interactable->position = vec3(0, 8, -5);
+		torusMesh->interactable->UpdateTransform();
+		InteractableMeshList.push_back(torusMesh);
 	}
 
 
@@ -147,10 +138,8 @@ void init(){
 }
 
 
-//Mesh* mesh, Texture texture, mat4 transformation, GLuint shader
 void DrawObject(Mesh* mesh, Texture* texture, mat4 transformation, ShaderInfo* shaderInfo) {
-	//mat4 transformation;
-	mat4 projection = Perspective(90.0f, (GLfloat)1.0f, 0.1f, 100.0f);
+	mat4 projection = Perspective(90.0f, (GLfloat)1.0f, 0.1f, 500.0f);
 	// Update camera
 	mat4 viewM = camera.calculateVievMatrix();
 
@@ -173,7 +162,7 @@ void DrawObject(Mesh* mesh, Texture* texture, mat4 transformation, ShaderInfo* s
 
 
 	GLfloat current_time = glutGet(GLUT_ELAPSED_TIME)*0.001;
-
+	std::cout << "[u_time location: " << shaderInfo->u_time << "]" << std::endl;
 	glUniform1fv(shaderInfo->u_time, 1, &current_time);
 
 	glUniformMatrix4fv(shaderInfo->uniformProjection, 1, GL_TRUE, projection);
