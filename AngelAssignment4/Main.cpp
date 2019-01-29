@@ -7,13 +7,12 @@ Mesh* skybox;
 Texture cubeTexture;
 Texture floorTexture;
 
-GLfloat xChange, yChange;
-
 
 void CreateTerrain() {
 	Mesh *obj1 = GenerateTerrainMesh(80, 80, 0.1f);
 	meshList.push_back(obj1);
 }
+
 Mesh* CreateCube(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat edgeLength) {
 	
 	PreMesh* preMesh = CreateCubePreMesh(centerX, centerY, centerZ, edgeLength);
@@ -86,7 +85,7 @@ void init(){
 		newShaderInfo->uniformEyePos = glGetUniformLocation(program, "eyePosition");
 		newShaderInfo->uniformSpecularIntensity = glGetUniformLocation(program, "material.specularIntensity");
 		newShaderInfo->uniformShininess = glGetUniformLocation(program, "material.shininess");
-
+		newShaderInfo->u_time = glGetUniformLocation(program, "u_time");
 		shaderInfoList.insert(shaderInfoList.end(), newShaderInfo);
 	}
 	{ // creating shader program
@@ -137,6 +136,7 @@ void init(){
 		skybox = CreateCube(0, 0, 0, 110);
 	}
 
+
 	//createFloor();
 	//CreateObjects();
 	CreateTerrain();
@@ -145,6 +145,8 @@ void init(){
 	glClearColor(BLACK, 1);
 
 }
+
+
 //Mesh* mesh, Texture texture, mat4 transformation, GLuint shader
 void DrawObject(Mesh* mesh, Texture* texture, mat4 transformation, ShaderInfo* shaderInfo) {
 	//mat4 transformation;
@@ -153,9 +155,6 @@ void DrawObject(Mesh* mesh, Texture* texture, mat4 transformation, ShaderInfo* s
 	mat4 viewM = camera.calculateVievMatrix();
 
 	glUseProgram(shaderInfo->program);
-
-
-	
 
 
 	mainLight.UseLight(uniformDirectionalLight.uniformAmbientIntensity,
@@ -173,6 +172,10 @@ void DrawObject(Mesh* mesh, Texture* texture, mat4 transformation, ShaderInfo* s
 		uniformSpotLight.uniformEdge);
 
 
+	GLfloat current_time = glutGet(GLUT_ELAPSED_TIME)*0.001;
+
+	glUniform1fv(shaderInfo->u_time, 1, &current_time);
+
 	glUniformMatrix4fv(shaderInfo->uniformProjection, 1, GL_TRUE, projection);
 	glUniformMatrix4fv(shaderInfo->uniformView, 1, GL_TRUE, viewM);
 	glUniform3f(shaderInfo->uniformEyePos, camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
@@ -184,6 +187,7 @@ void DrawObject(Mesh* mesh, Texture* texture, mat4 transformation, ShaderInfo* s
 void DrawInteractableObject(InteractableMesh* interactableMesh, Texture* texture) {
 	DrawObject(interactableMesh->mesh, texture, interactableMesh->interactable->transform, interactableMesh->shaderInfo);
 }
+
 float time = 0;
 void display(void) {
 
@@ -192,7 +196,6 @@ void display(void) {
 	glClear(clear3d);
 	time += deltaTime * 0.1f;
 	
-
 	mat4 transformation;// = Scale(vec3(1, 1, 1));
 	DrawObject(meshList[0], &floorTexture, transformation, shaderInfoList[0]);
 
@@ -227,8 +230,6 @@ void display(void) {
 		mat4 skyboxTransform = Translate(camPos) * RotateZ(mainLightInteractable->interactable->rotation.z) * RotateY(mainLightInteractable->interactable->rotation.y) * RotateX(mainLightInteractable->interactable->rotation.x);
 		//mat4 skyboxTransform = mat4(1);
 		
-		
-
 		DrawObject(skybox, &floorTexture, skyboxTransform, skyboxShader);
 	}
 	
@@ -299,7 +300,6 @@ int main(int argc, char **argv) {
 	shaderInfoList = std::vector<ShaderInfo*>();
 
 
-
 	init();
 
 	glutKeyboardFunc(keyboard);
@@ -333,7 +333,6 @@ void keyboard(unsigned char key, int x, int y)
 	MoveSelectedInteractable(key);
 
 	glutPostRedisplay();
-	
 }
 
 void reshape(int w, int h)
@@ -362,10 +361,9 @@ void reshape(int w, int h)
 	// Get Back to the Modelview
 	glMatrixMode(GL_MODELVIEW);
 
-
 }
 
-
+//GLfloat xChange, yChange;
 // Mouse control
 void mouseMove(int x, int y) {
 

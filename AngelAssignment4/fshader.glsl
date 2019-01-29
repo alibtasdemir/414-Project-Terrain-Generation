@@ -111,13 +111,17 @@ float remap( float minval, float maxval, float curval )
 {
     return ( curval - minval ) / ( maxval - minval );
 } 
-//                       r      b    g
+
+// Color constants
+//				             r      b    g  a
 const vec4 deepWater = vec4( 0.0, 0.0, 1.0, 1.0 );
 const vec4 water = vec4( 0.1, 0.1, 1.0, 1.0 );
 const vec4 sand = vec4( 0.8, 0.8, 0.0, 1.0 );
 const vec4 grass = vec4( 0.1, 0.9, 0.1, 1.0 );
 const vec4 darkGrass = vec4( 0.0, 0.5, 0.0, 1.0 );
 const vec4 snow = vec4( 1.0, 1.0, 1.0, 1.0 );
+
+
 
 const vec4 fog = vec4(0.7,0.7,0.7,1.0);
 float fogMaxDistance = 40;
@@ -155,11 +159,14 @@ void main()
 		float a = remap(0.2 * terrainYSize, 0.3 * terrainYSize, u);
 		terrainColor = a * grass + (1 - a) * sand;
 	}
-	else if (u > 0.1 * terrainYSize)
-	terrainColor = water;
-	else
-	terrainColor = deepWater;
+	else if (u > 0.1 * terrainYSize) {
+		terrainColor = water;
+	}
+	else {
 
+		terrainColor = deepWater;
+
+	}
 	float distanceToEyeSqr = length(eyePosition - FragPos);
 	if(distanceToEyeSqr > fogMaxDistance){distanceToEyeSqr = fogMaxDistance;}
 	float fogFactor = distanceToEyeSqr / fogMaxDistance;

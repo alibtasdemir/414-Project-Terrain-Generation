@@ -49,7 +49,7 @@ struct ShaderInfo {
 	GLuint program = 0;
 	GLuint uniformModel = 0, uniformProjection = 0,
 		uniformView = 0, uniformEyePos = 0,
-		uniformSpecularIntensity = 0, uniformShininess = 0;
+		uniformSpecularIntensity = 0, uniformShininess = 0, u_time = 0;
 };
 
 struct InteractableMesh {
@@ -70,6 +70,7 @@ InteractableMesh* mainLightInteractable;
 
 SpotLight spotLight;
 //Skybox skybox;
+
 
 int window_height = 1366,
 window_width = 768;
