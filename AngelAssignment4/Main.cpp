@@ -68,9 +68,7 @@ void init(){
 		
 		InteractableMesh* lightMesh = new InteractableMesh();
 		lightMesh->mesh = CreateMesh(CreateArrowPreMesh(0, 0, 0));
-		//PreMesh* torusPreMesh = CreateTorusPreMesh();
-		//DisplayPreMeshInfo(torusPreMesh);
-		//lightMesh->mesh = CreateMesh(torusPreMesh);
+		
 		
 		lightMesh->shaderInfo = newShaderInfo;
 		lightMesh->interactable = new Interactable();
@@ -122,7 +120,7 @@ void init(){
 		torusMesh->mesh = CreateMesh(CreateTorusPreMesh());// CreateCube(0, 0, 0, 1);
 		torusMesh->shaderInfo = newShaderInfo;
 		torusMesh->interactable = new Interactable();
-		torusMesh->interactable->position = vec3(0, 8, -5);
+		torusMesh->interactable->position = vec3(5, 3, -5);
 		torusMesh->interactable->UpdateTransform();
 		InteractableMeshList.push_back(torusMesh);
 	}
@@ -201,12 +199,20 @@ void display(void) {
 		vec3 lightDirectionV3 = vec3(lightDirection.x, lightDirection.y, lightDirection.z);
 		
 		mainLight.UpdateDirection(lightDirectionV3);
-		mainLightInteractable->interactable->UpdatePhysics();
+		//mainLightInteractable->interactable->UpdatePhysics();
+
 
 		sunlight = dot(lightDirectionV3, vec3(0, -1, 0));
 		sunlight = (sunlight + 1) / 2;
 		
 		mainLight.ambientIntensity = 0.2f * sunlight;
+		if (sunlight > 0.6f) {
+			mainLight.diffuseIntensity = ((sunlight - 0.6f) / 4) * 10;
+		}
+		else {
+			// 1,0.6   to   1, 0
+			mainLight.diffuseIntensity = 0;
+		}
 	}
 
 	{

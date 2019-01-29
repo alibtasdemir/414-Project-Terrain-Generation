@@ -184,12 +184,32 @@ PreMesh * CreateArrowPreMesh(GLfloat centerX, GLfloat centerY, GLfloat centerZ)
 		centerX + halfSideLength, centerY				  , centerZ - halfSideLength,	1.0f, 0.0f,		0.0f, 0.0f, 0.0f,	// bottom-right    2
 		centerX + halfSideLength, centerY				  , centerZ + halfSideLength,	0.0f, 0.0f,		0.0f, 0.0f, 0.0f,	// bottom-left     3
 
-		centerX                 , centerY - 1             , centerZ                 ,   0.0f, 0.0f,     0.0f, 0.0f, 0.0f                             
+		
+		
+		
+
+
+		centerX                 , centerY - 1             , centerZ                 ,   0.0f, 0.0f,     0.0f, 0.0f, 0.0f,   //                 4  4
+		centerX + halfSideLength, centerY				  , centerZ + halfSideLength,	0.0f, 0.0f,		0.0f, 0.0f, 0.0f,	// bottom-left     3  5
+		centerX - halfSideLength, centerY				  , centerZ + halfSideLength,	0.0f, 1.0f,		0.0f, 0.0f, 0.0f,	// top-left        0  6
+
+		centerX                 , centerY - 1             , centerZ                 ,   0.0f, 0.0f,     0.0f, 0.0f, 0.0f,   //                 4  7
+		centerX - halfSideLength, centerY				  , centerZ + halfSideLength,	0.0f, 1.0f,		0.0f, 0.0f, 0.0f,	// top-left        0  8
+		centerX - halfSideLength, centerY                 , centerZ - halfSideLength,	1.0f, 1.0f,		0.0f, 0.0f, 0.0f,	// top-right       1  9
+
+		centerX                 , centerY - 1             , centerZ                 ,   0.0f, 0.0f,     0.0f, 0.0f, 0.0f,   //                 4  10
+		centerX - halfSideLength, centerY                 , centerZ - halfSideLength,	1.0f, 1.0f,		0.0f, 0.0f, 0.0f,	// top-right       1  11
+		centerX + halfSideLength, centerY				  , centerZ - halfSideLength,	1.0f, 0.0f,		0.0f, 0.0f, 0.0f,	// bottom-right    2  12
+
+		centerX                 , centerY - 1             , centerZ                 ,   0.0f, 0.0f,     0.0f, 0.0f, 0.0f,   //                 4  13
+		centerX + halfSideLength, centerY				  , centerZ - halfSideLength,	1.0f, 0.0f,		0.0f, 0.0f, 0.0f,	// bottom-right    2  14
+		centerX + halfSideLength, centerY				  , centerZ + halfSideLength,	0.0f, 0.0f,		0.0f, 0.0f, 0.0f	// bottom-left     3  15
 	};
 
 	//  0  3    
 	//  1  2
 
+	/*
 	std::vector<unsigned int> indices{
 		0, 1, 2,
 		2, 3, 0,
@@ -198,6 +218,16 @@ PreMesh * CreateArrowPreMesh(GLfloat centerX, GLfloat centerY, GLfloat centerZ)
 		4, 0, 1,
 		4, 1, 2,
 		4, 2, 3
+	};
+	*/
+	std::vector<unsigned int> indices{
+		0, 1, 2,
+		2, 3, 0,
+
+		6, 5, 4,
+		9, 8, 7,
+		12, 11, 10,
+		15, 14, 13
 	};
 
 	PreMesh* pyramidPreMesh = new PreMesh();
